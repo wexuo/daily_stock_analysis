@@ -31,8 +31,8 @@ const zh = {
   'language.english': 'English',
   'language.short.en': 'EN',
   'language.short.zh': '中',
-  'language.toggle': '切换界面语言',
-  'language.uiLanguage': '界面语言',
+  'language.toggle': '切换语言',
+  'language.uiLanguage': '中文',
 
   'theme.dark': '深色',
   'theme.light': '浅色',
@@ -367,7 +367,7 @@ const zh = {
   'runFlow.nodeDetails.count.skipped': '跳过',
 
   'report.addToWatchlist': '加入自选',
-  'report.removeFromWatchlist': '从自选删除',
+  'report.removeFromWatchlist': '删除自选',
   'report.watchlist': '自选',
 
   'settings.actionSuccess': '操作成功',

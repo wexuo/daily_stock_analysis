@@ -3,7 +3,6 @@ import {
   BarChart3,
   Bell,
   BriefcaseBusiness,
-  Home,
   Menu,
   MessageSquareQuote,
   Settings2,
@@ -31,13 +30,6 @@ type TopNavItem = {
 };
 
 const TOP_NAV_ITEMS: TopNavItem[] = [
-  {
-    key: "home",
-    labelKey: "layout.nav.home",
-    to: "/",
-    icon: Home,
-    exact: true,
-  },
   {
     key: "chat",
     labelKey: "layout.nav.chat",
@@ -67,7 +59,7 @@ export const ShellHeader: React.FC<ShellHeaderProps> = ({
   const completionBadge = useAgentChatStore((state) => state.completionBadge);
 
   return (
-    <header className="sticky top-0 z-30 h-[64px] border-b border-border/60 bg-background/84 backdrop-blur-xl">
+    <header className="sticky top-0 h-[64px] border-b border-border/60 bg-background/84 backdrop-blur-xl">
       <div className="mx-auto flex h-full w-full max-w-[1680px] items-center gap-4 px-4 sm:px-6 lg:px-8">
         <button
           type="button"
@@ -80,14 +72,13 @@ export const ShellHeader: React.FC<ShellHeaderProps> = ({
 
         <div className="flex items-center gap-2">
           <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary-gradient text-[hsl(var(--primary-foreground))] shadow-[0_12px_28px_var(--nav-brand-shadow)]">
-            <BarChart3 className="h-5 w-5" />
+            <NavLink to="/">
+              <BarChart3 className="h-5 w-5" />
+            </NavLink>
           </div>
-          <span className="hidden font-semibold text-foreground sm:block">
-            DSA
-          </span>
         </div>
 
-        <nav className="hidden flex-1 items-center justify-center gap-1 sm:flex">
+        <nav className="hidden flex-1 items-center gap-1 sm:flex">
           {TOP_NAV_ITEMS.map(
             ({ key, labelKey, to, icon: Icon, exact, badge }) => {
               const label = t(labelKey);

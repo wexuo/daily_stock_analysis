@@ -51,9 +51,16 @@ export const StockBarItemComponent: React.FC<StockBarItemProps> = ({
     .replace("Market phase: ", "");
 
   return (
-    <button
-      type="button"
+    <div
+      role="button"
+      tabIndex={0}
       onClick={() => onClick(item.id)}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onClick(item.id);
+        }
+      }}
       aria-label={t("history.itemAria", {
         name: stockName,
         code: item.stockCode,
@@ -186,6 +193,6 @@ export const StockBarItemComponent: React.FC<StockBarItemProps> = ({
           </div>
         </div>
       </div>
-    </button>
+    </div>
   );
 };

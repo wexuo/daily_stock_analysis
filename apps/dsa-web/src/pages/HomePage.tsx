@@ -769,12 +769,12 @@ const HomePage: React.FC = () => {
       className="flex w-full flex-col overflow-hidden md:flex-row sm:h-[calc(100vh-5.5rem)] lg:h-[calc(100vh-2rem)]"
     >
       <div className="flex-1 flex flex-col w-full">
-        <header className="relative z-30 flex min-w-0 flex-shrink-0 items-center overflow-visible px-3 py-3 md:px-4 md:py-4">
+        <header className="flex min-w-0 flex-shrink-0 items-center overflow-visible px-3 py-3 md:px-4 md:py-4">
           <div className="flex min-w-0 flex-1 flex-col gap-2.5 md:flex-row md:items-center">
             <div className="flex min-w-0 flex-1 items-center gap-2.5">
               <button
                 onClick={() => setSidebarOpen(true)}
-                className="md:hidden -ml-1 flex-shrink-0 rounded-lg p-1.5 text-secondary-text transition-colors hover:bg-hover hover:text-foreground"
+                className="rounded-xl border border-border/70 bg-card/70 text-secondary-text transition-colors hover:bg-hover hover:text-foreground lg:hidden md:hidden -ml-1 flex-shrink-0 rounded-lg p-1.5 text-secondary-text transition-colors hover:bg-hover hover:text-foreground"
                 aria-label={t("home.historyButton")}
               >
                 <svg
@@ -791,7 +791,7 @@ const HomePage: React.FC = () => {
                   />
                 </svg>
               </button>
-              <div className="relative min-w-0 flex-1">
+              <div className="min-w-0 flex-1">
                 <StockAutocomplete
                   value={query}
                   onChange={setQuery}
@@ -804,7 +804,7 @@ const HomePage: React.FC = () => {
                 />
               </div>
               {analysisSkills.length > 0 ? (
-                <div ref={strategyMenuRef} className="relative flex-shrink-0">
+                <div ref={strategyMenuRef} className="flex-shrink-0">
                   <button
                     ref={strategyButtonRef}
                     id="strategy-menu-button"
@@ -896,7 +896,7 @@ const HomePage: React.FC = () => {
                 type="button"
                 onClick={() => handleSubmitAnalysis()}
                 disabled={!query || isAnalyzing}
-                className="btn-primary flex h-10 flex-1 items-center justify-center gap-1.5 whitespace-nowrap md:flex-none"
+                className="btn-primary z-[1] flex h-10 flex-1 items-center justify-center gap-1.5 whitespace-nowrap md:flex-none"
               >
                 {isAnalyzing ? (
                   <>
@@ -1154,6 +1154,38 @@ const HomePage: React.FC = () => {
                     </svg>
                     {t("home.fullReport")}
                   </Button>
+                  {watchlistState.isInWatchlist(
+                    selectedReport.meta.stockCode,
+                  ) && (
+                    <Button
+                      variant="home-action-ai"
+                      size="sm"
+                      disabled={
+                        selectedReport.meta.id === undefined ||
+                        watchlistState.isActioning
+                      }
+                      onClick={() =>
+                        void watchlistState.removeFromWatchlist(
+                          selectedReport.meta.stockCode,
+                        )
+                      }
+                    >
+                      <svg
+                        className="h-4 w-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                        />
+                      </svg>
+                      {t("report.removeFromWatchlist")}
+                    </Button>
+                  )}
                 </div>
                 {isHistoryTrendOpen ? (
                   <StockHistoryTrendDrawer

@@ -293,28 +293,8 @@ export const ReportOverview: React.FC<ReportOverviewProps> = ({
           </div>
         </div>
 
-        {/* 右侧：情绪指标 / 自选操作 */}
+        {/* 右侧：情绪指标 */}
         <div className="flex flex-col space-y-4">
-          {watchlist && meta.reportType !== 'market_review' && (
-            <Card variant="bordered" padding="sm" className="home-panel-card">
-              <div className="text-center space-y-3">
-                <span className="label-uppercase">{t('report.watchlist')}</span>
-                <div className="text-xs text-muted-text font-mono">{meta.stockCode}</div>
-                <Button
-                  variant={watchlist.isInWatchlist(meta.stockCode) ? 'danger-subtle' : 'secondary'}
-                  size="sm"
-                  isLoading={watchlist.isActioning}
-                  onClick={() => watchlist.onToggle(meta.stockCode)}
-                  className="w-full text-xs"
-                >
-                  {watchlist.isInWatchlist(meta.stockCode) ? t('report.removeFromWatchlist') : t('report.addToWatchlist')}
-                </Button>
-                {watchlist.actionMessage && (
-                  <p className="text-[11px] text-secondary-text animate-in fade-in">{watchlist.actionMessage}</p>
-                )}
-              </div>
-            </Card>
-          )}
           <Card variant="bordered" padding="md" className="home-panel-card home-rail-card !overflow-visible">
             <div className="text-center">
               <h3 className="mb-5 text-sm font-medium tracking-wide text-foreground">{text.marketSentiment}</h3>
