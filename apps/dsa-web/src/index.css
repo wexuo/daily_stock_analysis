@@ -3,12 +3,13 @@
 /* Tailwind v4 strategy: keep theme extensions in tailwind.config.js via @config until a dedicated @theme/@utility migration. */
 
 /* =========================================
-   1. THEME VARIABLES (Base/Classic)
+   1. THEME VARIABLES (Claude Design System)
    ========================================= */
 :root {
-  /* Typography */
+  /* Typography - Claude uses StyreneB/Inter for body, Copernicus/Tiempos for display */
   font-family:
     "Inter",
+    "StyreneB",
     "SF Pro Display",
     "Segoe UI",
     system-ui,
@@ -21,49 +22,53 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  /* HSL tokens used by Tailwind-based components */
+  /* HSL tokens - Claude Design System (Light Theme) */
+  /* Canvas: warm cream (#faf9f5 = hsl(40 33% 97%)) */
+  /* Primary: warm coral (#cc785c = hsl(16 47% 58%)) */
+  /* Ink: warm dark (#141413 = hsl(60 4% 8%)) */
 
-  --background: 216 33% 97%;
-  --foreground: 228 35% 12%;
-  --card: 0 0% 100%;
-  --card-foreground: 228 35% 12%;
-  --popover: 0 0% 100%;
-  --popover-foreground: 228 35% 12%;
-  --primary: 193 100% 43%;
-  --primary-foreground: 216 33% 97%;
-  --secondary: 214 32% 91%;
-  --secondary-foreground: 228 35% 16%;
-  --muted: 214 30% 94%;
-  --muted-foreground: 224 12% 42%;
-  --accent: 214 32% 93%;
-  --accent-foreground: 228 35% 16%;
-  --destructive: 349 82% 56%;
-  --destructive-foreground: 210 33% 98%;
-  --border: 217 28% 84%;
-  --input: 217 28% 84%;
-  --ring: 193 100% 43%;
+  --background: 40 33% 97%;        /* Canvas - warm cream, not pure white */
+  --foreground: 30 8% 8%;          /* Ink - warm dark text */
+  --card: 40 25% 99%;              /* Surface card - slightly darker cream */
+  --card-foreground: 30 8% 8%;
+  --popover: 40 25% 99%;
+  --popover-foreground: 30 8% 8%;
+  --primary: 16 47% 58%;           /* Coral primary (#cc785c) */
+  --primary-foreground: 40 33% 97%; /* On primary - canvas color */
+  --secondary: 30 18% 91%;         /* Light cream for secondary surfaces */
+  --secondary-foreground: 30 20% 16%;
+  --muted: 35 20% 94%;             /* Muted cream backgrounds */
+  --muted-foreground: 30 8% 42%;   /* Muted text */
+  --accent: 30 18% 93%;
+  --accent-foreground: 30 20% 16%;
+  --destructive: 0 72% 56%;        /* Error red */
+  --destructive-foreground: 40 33% 98%;
+  --border: 30 15% 84%;            /* Hairline borders */
+  --input: 30 15% 84%;
+  --ring: 16 47% 58%;              /* Focus ring uses coral */
   --radius: 1rem;
-  --elevated: 0 0% 100%;
-  --hover: 214 29% 90%;
-  --secondary-text: 224 18% 28%;
-  --muted-text: 224 12% 35%;
+  --elevated: 40 30% 98%;          /* Elevated surfaces */
+  --hover: 35 22% 90%;             /* Hover states */
+  --secondary-text: 30 12% 28%;    /* Body text color */
+  --muted-text: 30 8% 42%;         /* Muted/secondary text */
 
-  --color-cyan: hsl(var(--primary));
+  /* Accent colors - keeping existing for compatibility, but primary is now coral */
+  --color-cyan: hsl(var(--primary));        /* Now coral, not cyan */
   --color-cyan-dim: hsl(var(--primary) / 0.8);
   --color-cyan-glow: hsl(var(--primary) / 0.18);
-  --color-purple: 247 84% 66%;
+  --color-purple: 247 84% 66%;              /* Accent purple for highlights */
   --color-purple-dim: 247 84% 56%;
   --color-purple-glow: hsl(247 84% 66% / 0.18);
-  --color-success: 152 69% 40%;
-  --color-warning: 37 92% 50%;
-  --color-danger: 0 90% 55%;
-  --color-danger-alert-text: 349 82% 35%; /* Darker red for light mode */
-  --color-danger-alert-border: 349 82% 56%;
-  --color-danger-alert-bg: 349 82% 56%;
+  --color-success: 152 69% 40%;             /* Success green */
+  --color-warning: 37 92% 50%;              /* Warning amber */
+  --color-danger: 0 72% 56%;                /* Error red */
+  --color-danger-alert-text: 0 72% 35%;     /* Darker red for light mode */
+  --color-danger-alert-border: 0 72% 56%;
+  --color-danger-alert-bg: 0 72% 56%;
   /* Tailwind-compatible accent colors (Light theme) */
-  --color-cyan-400: 188 78% 41%;
+  --color-cyan-400: 16 47% 58%;             /* Coral primary for cyan usage */
   --color-emerald-400: 152 69% 40%;
-  --color-red-400: 0 90% 55%;
+  --color-red-400: 0 72% 56%;
   --color-amber-400: 37 92% 50%;
   /* Tailwind aliases (for hsl(var(--success))) */
   --success: var(--color-success);
@@ -98,8 +103,8 @@
   --border-subtle: hsl(var(--border-subtle-raw) / 0.04);
   --border-subtle-hover: hsl(var(--border-subtle-raw) / 0.06);
   --border-default: var(--border-dim);
-  --border-hover: hsl(var(--primary) / 0.24);
-  --border-selected: hsl(var(--primary) / 0.32);
+  --border-hover: hsl(var(--primary) / 0.24);          /* Coral on hover */
+  --border-selected: hsl(var(--primary) / 0.32);       /* Coral when selected */
 
   /* Surface variants */
   --surface-1: hsl(var(--card));
@@ -302,48 +307,52 @@
 }
 
 .dark {
-  --background: 228 35% 7%;
-  --foreground: 210 33% 98%;
-  --card: 230 24% 10%;
-  --card-foreground: 210 33% 98%;
-  --popover: 230 24% 10%;
-  --popover-foreground: 210 33% 98%;
-  --primary: 190 100% 50%;
-  --primary-foreground: 228 35% 8%;
-  --secondary: 231 19% 15%;
-  --secondary-foreground: 210 33% 94%;
-  --muted: 230 18% 14%;
-  --muted-foreground: 228 13% 66%;
-  --accent: 231 18% 16%;
-  --accent-foreground: 210 33% 98%;
-  --destructive: 349 100% 63%;
-  --destructive-foreground: 210 33% 98%;
-  --border: 226 19% 20%;
-  --input: 226 19% 20%;
-  --ring: 190 100% 50%;
-  --elevated: 230 22% 12%;
-  --hover: 231 20% 16%;
-  --secondary-text: 228 16% 72%;
-  --muted-text: 228 10% 48%;
+  /* Claude Dark Theme - Surface Dark (#181715 = hsl(30 10% 10%)) */
+  /* Primary stays coral but adjusted for dark backgrounds */
 
-  --color-cyan: hsl(var(--primary));
+  --background: 30 10% 10%;        /* Surface dark - warm dark navy */
+  --foreground: 40 33% 98%;        /* On dark - cream tinted white */
+  --card: 30 12% 12%;              /* Card surfaces - slightly elevated */
+  --card-foreground: 40 33% 98%;
+  --popover: 30 12% 12%;
+  --popover-foreground: 40 33% 98%;
+  --primary: 16 47% 65%;           /* Coral brightened for dark mode */
+  --primary-foreground: 30 10% 10%; /* Dark surface for text on coral */
+  --secondary: 30 10% 15%;         /* Secondary dark surfaces */
+  --secondary-foreground: 40 25% 94%;
+  --muted: 30 8% 14%;              /* Muted dark backgrounds */
+  --muted-foreground: 30 8% 66%;   /* Muted text on dark */
+  --accent: 30 8% 16%;
+  --accent-foreground: 40 33% 98%;
+  --destructive: 0 72% 63%;        /* Brighter red for dark mode */
+  --destructive-foreground: 40 33% 98%;
+  --border: 30 10% 20%;            /* Darker borders */
+  --input: 30 10% 20%;
+  --ring: 16 47% 65%;              /* Coral focus ring */
+  --elevated: 30 12% 13%;          /* Elevated dark surfaces */
+  --hover: 30 10% 16%;             /* Hover states on dark */
+  --secondary-text: 30 8% 72%;     /* Secondary text on dark */
+  --muted-text: 30 6% 48%;         /* Muted text on dark */
+
+  /* Accent colors - Dark theme with coral primary */
+  --color-cyan: hsl(var(--primary));        /* Coral primary */
   --color-cyan-dim: hsl(var(--primary) / 0.8);
   --color-cyan-glow: hsl(var(--primary) / 0.4);
-  --color-purple: 247 84% 72%;
+  --color-purple: 247 84% 72%;              /* Brighter purple for dark */
   --color-purple-dim: 247 84% 62%;
   --color-purple-glow: hsl(247 84% 72% / 0.3);
-  --color-success: 152 69% 40%;
-  --color-warning: 37 92% 50%;
-  --color-danger: 0 90% 55%;
-  --color-danger-alert-text: 349 100% 75%; /* Bright/light pink for dark mode */
-  --color-danger-alert-border: 349 100% 63%;
-  --color-danger-alert-bg: 349 100% 63%;
-  --autocomplete-hover-bg: #2dcae6;
+  --color-success: 152 69% 45%;             /* Brighter green for dark */
+  --color-warning: 37 92% 55%;              /* Brighter amber for dark */
+  --color-danger: 0 72% 63%;                /* Brighter red for dark */
+  --color-danger-alert-text: 0 72% 75%;     /* Light pink for dark mode */
+  --color-danger-alert-border: 0 72% 63%;
+  --color-danger-alert-bg: 0 72% 63%;
+  --autocomplete-hover-bg: #d4896d;         /* Coral tint for hover */
   /* Tailwind-compatible accent colors (Dark theme) */
-  --color-cyan-400: 188 78% 41%;
-  --color-emerald-400: 152 69% 40%;
-  --color-red-400: 0 90% 55%;
-  --color-amber-400: 37 92% 50%;
+  --color-cyan-400: 16 47% 65%;             /* Coral primary */
+  --color-emerald-400: 152 69% 45%;
+  --color-red-400: 0 72% 63%;
+  --color-amber-400: 37 92% 55%;
   /* Tailwind aliases (for hsl(var(--success))) */
   --success: var(--color-success);
   --warning: var(--color-warning);
@@ -377,8 +386,8 @@
   --border-subtle: hsl(var(--border-subtle-raw) / 0.08);
   --border-subtle-hover: hsl(var(--border-subtle-raw) / 0.15);
   --border-default: var(--border-dim);
-  --border-hover: hsl(var(--primary) / 0.34);
-  --border-selected: hsl(var(--primary) / 0.46);
+  --border-hover: hsl(var(--primary) / 0.34);          /* Coral hover in dark */
+  --border-selected: hsl(var(--primary) / 0.46);       /* Coral selected in dark */
 
   /* Dark theme surface variants */
   --surface-1: hsl(var(--card));
@@ -995,10 +1004,10 @@
 
 /* ============ Utilities ============ */
 .text-cyan {
-  color: var(--color-cyan);
+  color: var(--color-cyan);  /* Now coral */
 }
 .text-primary {
-  color: var(--color-cyan);
+  color: var(--color-cyan);  /* Now coral */
 }
 .text-cyan-400 {
   color: hsl(var(--color-cyan-400));
@@ -1971,20 +1980,20 @@ textarea {
 }
 
 .btn-primary {
-  border: 1px solid rgba(0, 212, 255, 0.26);
+  border: 1px solid hsl(var(--primary) / 0.26);
   background: linear-gradient(
     135deg,
-    rgba(0, 212, 255, 0.96),
-    rgba(0, 168, 204, 0.96)
+    hsl(var(--primary) / 0.96),
+    hsl(var(--primary) / 0.84)
   );
-  color: #041118;
-  box-shadow: 0 12px 28px rgba(0, 212, 255, 0.2);
+  color: hsl(var(--primary-foreground));
+  box-shadow: 0 12px 28px hsl(var(--primary) / 0.2);
 }
 
 .btn-primary:hover {
   transform: translateY(-1px);
   filter: brightness(1.04);
-  box-shadow: 0 18px 34px rgba(0, 212, 255, 0.22);
+  box-shadow: 0 18px 34px hsl(var(--primary) / 0.22);
 }
 
 .btn-secondary {

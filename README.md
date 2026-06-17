@@ -139,9 +139,49 @@
 
 ### 方式二：[客户端配置教程](https://www.bilibili.com/video/BV11FEb66Eyr/) / 本地运行 / Docker 部署
 
+#### 使用 uv（推荐）
+
+```bash
+# 安装 uv（如果还没安装）
+# Windows (PowerShell)
+powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
+# macOS/Linux
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# 克隆项目
+git clone https://github.com/ZhuLinsen/daily_stock_analysis.git && cd daily_stock_analysis
+
+# 同步依赖（自动创建虚拟环境）
+uv sync
+
+# 配置环境变量
+cp .env.example .env && vim .env
+
+# 运行分析
+uv run python main.py
+```
+
+常用命令：
+
+```bash
+uv run python main.py --debug
+uv run python main.py --dry-run
+uv run python main.py --stocks 600519,hk00700,AAPL
+uv run python main.py --market-review
+uv run python main.py --schedule
+uv run python main.py --serve-only
+```
+
+#### 使用传统 pip/venv
+
 ```bash
 # 克隆项目
 git clone https://github.com/ZhuLinsen/daily_stock_analysis.git && cd daily_stock_analysis
+
+# 创建虚拟环境
+python -m venv .venv
+source .venv/bin/activate  # Linux/macOS
+# .venv\Scripts\activate   # Windows
 
 # 安装依赖
 pip install -r requirements.txt
@@ -153,16 +193,7 @@ cp .env.example .env && vim .env
 python main.py
 ```
 
-常用命令：
-
-```bash
-python main.py --debug
-python main.py --dry-run
-python main.py --stocks 600519,hk00700,AAPL
-python main.py --market-review
-python main.py --schedule
-python main.py --serve-only
-```
+> **注意**: 项目已迁移到 uv 包管理工具，推荐使用 uv 以获得更快的依赖安装速度和更好的开发体验。详见 [UV 迁移指南](docs/UV_MIGRATION.md)。
 
 > Docker 部署、定时任务、云服务器访问请参考 [完整指南](docs/full-guide.md)；桌面客户端打包请参考 [桌面端打包说明](docs/desktop-package.md)。
 
