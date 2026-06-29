@@ -14,9 +14,9 @@ Covers:
 import pytest
 from unittest.mock import patch, MagicMock
 from fastapi.testclient import TestClient
-from api.app import create_app
-from src.services.task_queue import AnalysisTaskQueue, TaskStatus
-from src.config import Config
+from daily_stock_analysis.api.app import create_app
+from daily_stock_analysis.services.task_queue import AnalysisTaskQueue, TaskStatus
+from daily_stock_analysis.config import Config
 import src.auth as auth
 
 @pytest.fixture
@@ -29,14 +29,14 @@ def client():
 def disable_auth():
     """Keep analysis integration tests independent from local auth env state."""
     auth._auth_enabled = None
-    with patch("api.middlewares.auth.is_auth_enabled", return_value=False), \
-         patch("src.auth.is_auth_enabled", return_value=False):
+    with patch("daily_stock_analysis.api.middlewares.auth.is_auth_enabled", return_value=False), \
+         patch("daily_stock_analysis.src.auth.is_auth_enabled", return_value=False):
         yield
     auth._auth_enabled = None
 
 @pytest.fixture
 def mock_task_queue():
-    with patch("api.v1.endpoints.analysis.get_task_queue") as mock_get:
+    with patch("daily_stock_analysis.api.v1.endpoints.analysis.get_task_queue") as mock_get:
         queue = MagicMock(spec=AnalysisTaskQueue)
         mock_get.return_value = queue
         yield queue

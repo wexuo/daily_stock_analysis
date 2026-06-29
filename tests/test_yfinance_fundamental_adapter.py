@@ -13,7 +13,7 @@ from unittest.mock import patch, MagicMock
 
 import pandas as pd
 
-from data_provider.yfinance_fundamental_adapter import (
+from daily_stock_analysis.data_provider.yfinance_fundamental_adapter import (
     YfinanceFundamentalAdapter,
     _convert_to_yf_symbol,
 )

@@ -14,10 +14,10 @@ from tests.litellm_stub import ensure_litellm_stub
 
 ensure_litellm_stub()
 
-from src.analyzer import AnalysisResult
-from src.core.pipeline import StockAnalysisPipeline
-from src.enums import ReportType
-from src.services.run_diagnostics import activate_run_diagnostic_context, current_diagnostic_snapshot, reset_run_diagnostic_context
+from daily_stock_analysis.analyzer import AnalysisResult
+from daily_stock_analysis.core.pipeline import StockAnalysisPipeline
+from daily_stock_analysis.enums import ReportType
+from daily_stock_analysis.services.run_diagnostics import activate_run_diagnostic_context, current_diagnostic_snapshot, reset_run_diagnostic_context
 
 
 def _analysis_result() -> AnalysisResult:
@@ -387,7 +387,7 @@ class PipelineMarketPhaseContextTestCase(unittest.TestCase):
         pipeline._ensure_agent_history = MagicMock()
         phase_payload = _phase_payload()
 
-        from src.agent.executor import AgentResult
+        from daily_stock_analysis.agent.executor import AgentResult
 
         agent_result = AgentResult(
             success=True,
@@ -457,7 +457,7 @@ class PipelineMarketPhaseContextTestCase(unittest.TestCase):
             "Social sentiment raw payload should stay in legacy news_context only."
         )
 
-        from src.agent.executor import AgentResult
+        from daily_stock_analysis.agent.executor import AgentResult
 
         executor = MagicMock()
         executor.run.return_value = AgentResult(
@@ -513,7 +513,7 @@ class PipelineMarketPhaseContextTestCase(unittest.TestCase):
             "yesterday": {"date": "2026-06-01", "close": 6.78, "volume": 900.0},
         }
 
-        from src.agent.executor import AgentResult
+        from daily_stock_analysis.agent.executor import AgentResult
 
         executor = MagicMock()
         executor.run.return_value = AgentResult(
@@ -566,7 +566,7 @@ class PipelineMarketPhaseContextTestCase(unittest.TestCase):
         pipeline._ensure_agent_history = MagicMock()
         phase_payload = _phase_payload()
 
-        from src.agent.executor import AgentResult
+        from daily_stock_analysis.agent.executor import AgentResult
 
         executor = MagicMock()
         executor.run.return_value = AgentResult(
@@ -625,7 +625,7 @@ class PipelineMarketPhaseContextTestCase(unittest.TestCase):
             trigger_source="api",
         )
         try:
-            from src.agent.executor import AgentResult
+            from daily_stock_analysis.agent.executor import AgentResult
 
             agent_result = AgentResult(
                 success=True,
@@ -679,7 +679,7 @@ class PipelineMarketPhaseContextTestCase(unittest.TestCase):
         pipeline = _make_pipeline(agent_mode=True, save_context_snapshot=True)
         pipeline._ensure_agent_history = MagicMock()
 
-        from src.agent.executor import AgentResult
+        from daily_stock_analysis.agent.executor import AgentResult
         executor = MagicMock()
         executor.run.return_value = AgentResult(
             success=True,
@@ -838,7 +838,7 @@ class PipelineMarketPhaseContextTestCase(unittest.TestCase):
         pipeline._ensure_agent_history = MagicMock()
         phase_payload = _phase_payload()
 
-        from src.agent.executor import AgentResult
+        from daily_stock_analysis.agent.executor import AgentResult
 
         agent_result = AgentResult(
             success=True,

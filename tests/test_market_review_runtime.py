@@ -9,7 +9,7 @@ from tests.litellm_stub import ensure_litellm_stub
 
 ensure_litellm_stub()
 
-from src.core.market_review_runtime import build_market_review_runtime, has_configured_llm_runtime
+from daily_stock_analysis.core.market_review_runtime import build_market_review_runtime, has_configured_llm_runtime
 
 
 class TestMarketReviewRuntimeCompatibility(unittest.TestCase):

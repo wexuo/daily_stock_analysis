@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """Watchlist API regressions for stock-code variant matching."""
 
-from api.v1.endpoints.stocks import add_to_watchlist, remove_from_watchlist
-from api.v1.schemas.history import WatchlistRequest
+from daily_stock_analysis.api.v1.endpoints.stocks import add_to_watchlist, remove_from_watchlist
+from daily_stock_analysis.api.v1.schemas.history import WatchlistRequest
 
 
 class FakeSystemConfigService:

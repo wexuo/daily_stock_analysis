@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 from types import SimpleNamespace
 from unittest.mock import MagicMock, patch
 
-from src.services.history_service import HistoryService
+from daily_stock_analysis.services.history_service import HistoryService
 
 
 class HistoryNewsFallbackTestCase(unittest.TestCase):

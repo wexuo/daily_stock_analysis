@@ -13,7 +13,7 @@ from tests.litellm_stub import ensure_litellm_stub
 
 ensure_litellm_stub()
 
-from data_provider.akshare_fetcher import AkshareFetcher, _akshare_call_with_timeout
+from daily_stock_analysis.data_provider.akshare_fetcher import AkshareFetcher, _akshare_call_with_timeout
 
 
 def _sleep_for(seconds: float) -> None:

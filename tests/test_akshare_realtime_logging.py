@@ -6,7 +6,7 @@ import pandas as pd
 import pytest
 import requests
 
-from data_provider.akshare_fetcher import (
+from daily_stock_analysis.data_provider.akshare_fetcher import (
     AkshareFetcher,
     SINA_REALTIME_ENDPOINT,
     TENCENT_REALTIME_ENDPOINT,

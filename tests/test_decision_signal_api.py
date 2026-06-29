@@ -20,9 +20,9 @@ except ModuleNotFoundError:
     sys.modules["litellm"] = MagicMock()
 
 import src.auth as auth
-from api.app import create_app
-from src.config import Config
-from src.storage import DatabaseManager, DecisionSignalRecord, PortfolioAccount, PortfolioPosition, utc_naive_now
+from daily_stock_analysis.api.app import create_app
+from daily_stock_analysis.config import Config
+from daily_stock_analysis.storage import DatabaseManager, DecisionSignalRecord, PortfolioAccount, PortfolioPosition, utc_naive_now
 
 
 @contextmanager
@@ -874,7 +874,7 @@ def test_query_validation_error_envelope(client_and_db) -> None:
 def test_internal_errors_do_not_reflect_exception_details(client_and_db) -> None:
     client, _db = client_and_db
 
-    with patch("api.v1.endpoints.decision_signals.DecisionSignalService") as service_cls:
+    with patch("daily_stock_analysis.api.v1.endpoints.decision_signals.DecisionSignalService") as service_cls:
         service_cls.return_value.list_signals.side_effect = RuntimeError(
             "secret-token /private/tmp/internal-path"
         )
@@ -1096,7 +1096,7 @@ def test_dedup_distinguishes_source_type_for_weak_report_ids(client_and_db) -> N
 
 
 def test_stock_filter_codes_cover_market_optional_hk_without_widening_other_markets() -> None:
-    from src.services.decision_signal_service import DecisionSignalService
+    from daily_stock_analysis.services.decision_signal_service import DecisionSignalService
 
     cases = [
         ("00700", None, ["00700", "HK00700"]),

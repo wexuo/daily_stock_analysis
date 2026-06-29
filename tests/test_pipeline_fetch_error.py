@@ -5,7 +5,7 @@ from datetime import date, datetime, timezone
 import unittest
 from unittest.mock import MagicMock, patch
 
-from src.core.pipeline import StockAnalysisPipeline
+from daily_stock_analysis.core.pipeline import StockAnalysisPipeline
 
 
 class PipelineFetchErrorTestCase(unittest.TestCase):

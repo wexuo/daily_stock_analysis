@@ -15,9 +15,9 @@ from tests.litellm_stub import ensure_litellm_stub
 
 ensure_litellm_stub()
 
-from src.config import ANSPIRE_LLM_MODEL_DEFAULT, Config
-from src.core.config_manager import ConfigManager
-from src.services.system_config_service import ConfigConflictError, ConfigImportError, SystemConfigService
+from daily_stock_analysis.config import ANSPIRE_LLM_MODEL_DEFAULT, Config
+from daily_stock_analysis.core.config_manager import ConfigManager
+from daily_stock_analysis.services.system_config_service import ConfigConflictError, ConfigImportError, SystemConfigService
 
 
 class SystemConfigServiceTestCase(unittest.TestCase):
@@ -2050,7 +2050,7 @@ class SystemConfigServiceTestCase(unittest.TestCase):
         mock_load_config,
         mock_completion,
     ) -> None:
-        from src.llm.generation_params import clear_litellm_generation_param_recovery_cache
+        from daily_stock_analysis.llm.generation_params import clear_litellm_generation_param_recovery_cache
 
         clear_litellm_generation_param_recovery_cache()
         mock_load_config.return_value = SimpleNamespace(llm_temperature=0.42)

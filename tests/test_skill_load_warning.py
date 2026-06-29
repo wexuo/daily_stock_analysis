@@ -12,9 +12,9 @@ except ModuleNotFoundError:
 
     ensure_litellm_stub()
 
-from bot.commands.ask import AskCommand
-from src.agent.skills.aggregator import SkillAggregator
-from src.agent.skills.router import SkillRouter
+from daily_stock_analysis.bot.commands.ask import AskCommand
+from daily_stock_analysis.agent.skills.aggregator import SkillAggregator
+from daily_stock_analysis.agent.skills.router import SkillRouter
 
 
 class AskCommandSkillLoadWarningTests(unittest.TestCase):

@@ -17,7 +17,7 @@ ensure_litellm_stub()
 
 _ENV_BEFORE_MAIN_IMPORT = dict(os.environ)
 import main
-from src.config import Config
+from daily_stock_analysis.config import Config
 
 _MAIN_IMPORT_ENV_ADDITIONS = frozenset(set(os.environ) - set(_ENV_BEFORE_MAIN_IMPORT))
 _MAIN_IMPORT_ENV_OVERRIDES = {
@@ -111,7 +111,7 @@ class MainScheduleModeTestCase(unittest.TestCase):
         return _DummyConfig(**defaults)
 
     def test_public_webui_bind_warns_when_auth_is_disabled(self) -> None:
-        with patch("src.auth.is_auth_enabled", return_value=False), \
+        with patch("daily_stock_analysis.src.auth.is_auth_enabled", return_value=False), \
              patch("main.logger.warning") as warning_log:
             main._warn_if_public_webui_without_auth("0.0.0.0")
 
@@ -120,7 +120,7 @@ class MainScheduleModeTestCase(unittest.TestCase):
         self.assertEqual(warning_log.call_args.args[1], "0.0.0.0")
 
     def test_loopback_webui_bind_does_not_warn_when_auth_is_disabled(self) -> None:
-        with patch("src.auth.is_auth_enabled", return_value=False), \
+        with patch("daily_stock_analysis.src.auth.is_auth_enabled", return_value=False), \
              patch("main.logger.warning") as warning_log:
             main._warn_if_public_webui_without_auth("127.0.0.1")
 
@@ -607,7 +607,7 @@ class MainScheduleModeTestCase(unittest.TestCase):
         run_full_analysis.assert_called_once_with(config, args, ["600519", "000001"])
 
     def test_run_full_analysis_skips_market_review_when_shared_lock_is_held(self) -> None:
-        from src.core.market_review_lock import (
+        from daily_stock_analysis.core.market_review_lock import (
             release_market_review_lock,
             try_acquire_market_review_lock,
         )

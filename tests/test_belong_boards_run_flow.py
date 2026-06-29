@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 """Regression tests for belong-board run-flow diagnostics."""
 
-from src.services.run_diagnostics import (
+from daily_stock_analysis.services.run_diagnostics import (
     activate_run_diagnostic_context,
     current_diagnostic_snapshot,
     reset_run_diagnostic_context,
 )
-from data_provider.base import DataFetcherManager
+from daily_stock_analysis.data_provider.base import DataFetcherManager
 
 
 class _BoardFetcher:

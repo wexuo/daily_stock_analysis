@@ -25,13 +25,13 @@ from dataclasses import dataclass
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from data_provider.longbridge_fetcher import (
+from daily_stock_analysis.data_provider.longbridge_fetcher import (
     LongbridgeFetcher,
     _to_longbridge_symbol,
     _is_us_code,
     _is_hk_code,
 )
-from data_provider.realtime_types import UnifiedRealtimeQuote, RealtimeSource
+from daily_stock_analysis.data_provider.realtime_types import UnifiedRealtimeQuote, RealtimeSource
 
 
 class TestSymbolConversion(unittest.TestCase):
@@ -622,7 +622,7 @@ class TestSupplementFromLongbridge(unittest.TestCase):
 
     def test_merge_fills_missing_fields(self):
         """When yfinance quote is missing volume_ratio/turnover_rate, LB fills them."""
-        from data_provider.base import DataFetcherManager
+        from daily_stock_analysis.data_provider.base import DataFetcherManager
 
         yf_quote = UnifiedRealtimeQuote(
             code="AAPL",
@@ -665,7 +665,7 @@ class TestSupplementFromLongbridge(unittest.TestCase):
 
     def test_sole_source_when_yfinance_fails(self):
         """When yfinance returns None, LB acts as sole source."""
-        from data_provider.base import DataFetcherManager
+        from daily_stock_analysis.data_provider.base import DataFetcherManager
 
         lb_quote = UnifiedRealtimeQuote(
             code="AAPL",

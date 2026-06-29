@@ -11,7 +11,7 @@ try:
 except ModuleNotFoundError:
     sys.modules["litellm"] = MagicMock()
 
-from src.agent.llm_adapter import LLMToolAdapter  # noqa: E402
+from daily_stock_analysis.agent.llm_adapter import LLMToolAdapter  # noqa: E402
 
 
 def test_convert_messages_preserves_reasoning_blocks_and_provider_specific_fields() -> None:

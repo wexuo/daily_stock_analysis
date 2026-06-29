@@ -13,10 +13,10 @@ import unittest
 from datetime import date, datetime
 from unittest.mock import patch
 
-from src.config import Config
-from src.core.backtest_engine import OVERALL_SENTINEL_CODE
-from src.services.backtest_service import BacktestService
-from src.storage import AnalysisHistory, BacktestResult, BacktestSummary, DatabaseManager, StockDaily
+from daily_stock_analysis.config import Config
+from daily_stock_analysis.core.backtest_engine import OVERALL_SENTINEL_CODE
+from daily_stock_analysis.services.backtest_service import BacktestService
+from daily_stock_analysis.storage import AnalysisHistory, BacktestResult, BacktestSummary, DatabaseManager, StockDaily
 
 
 class BacktestServiceTestCase(unittest.TestCase):

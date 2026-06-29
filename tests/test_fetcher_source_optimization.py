@@ -13,13 +13,13 @@ if "litellm" not in sys.modules:
 if "json_repair" not in sys.modules:
     sys.modules["json_repair"] = MagicMock()
 
-from data_provider.base import (
+from daily_stock_analysis.data_provider.base import (
     BaseFetcher,
     DataFetchError,
     DataFetcherManager,
     STANDARD_COLUMNS,
 )
-from data_provider.realtime_types import RealtimeSource, UnifiedRealtimeQuote
+from daily_stock_analysis.data_provider.realtime_types import RealtimeSource, UnifiedRealtimeQuote
 
 
 class _StubFetcher:

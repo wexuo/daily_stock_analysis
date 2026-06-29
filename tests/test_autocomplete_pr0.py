@@ -11,9 +11,9 @@ Test backend data contract extensions:
 - Backward compatibility
 """
 
-from api.v1.schemas.analysis import AnalyzeRequest
+from daily_stock_analysis.api.v1.schemas.analysis import AnalyzeRequest
 from concurrent.futures import Future
-from src.services.task_queue import TaskInfo, get_task_queue, DuplicateTaskError, AnalysisTaskQueue
+from daily_stock_analysis.services.task_queue import TaskInfo, get_task_queue, DuplicateTaskError, AnalysisTaskQueue
 
 
 class TestAnalyzeRequest:

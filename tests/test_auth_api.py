@@ -21,9 +21,9 @@ except ModuleNotFoundError:
     sys.modules["litellm"] = MagicMock()
 
 import src.auth as auth
-from api.middlewares.auth import AuthMiddleware
-from api.v1.endpoints import auth as auth_endpoint
-from src.config import Config
+from daily_stock_analysis.api.middlewares.auth import AuthMiddleware
+from daily_stock_analysis.api.v1.endpoints import auth as auth_endpoint
+from daily_stock_analysis.config import Config
 
 
 def _reset_auth_globals() -> None:
@@ -222,7 +222,7 @@ class AuthApiTestCase(unittest.TestCase):
         request = Request(scope)
         middleware = AuthMiddleware(app=MagicMock())
 
-        with patch("api.middlewares.auth.is_auth_enabled", return_value=True):
+        with patch("daily_stock_analysis.api.middlewares.auth.is_auth_enabled", return_value=True):
             response = asyncio.run(middleware.dispatch(request, AsyncMock(return_value=Response(status_code=200))))
 
         self.assertEqual(response.status_code, 401)
@@ -243,7 +243,7 @@ class AuthApiTestCase(unittest.TestCase):
         middleware = AuthMiddleware(app=MagicMock())
         call_next = AsyncMock(return_value=Response(status_code=204))
 
-        with patch("api.middlewares.auth.is_auth_enabled", return_value=True):
+        with patch("daily_stock_analysis.api.middlewares.auth.is_auth_enabled", return_value=True):
             response = asyncio.run(middleware.dispatch(request, call_next))
 
         self.assertEqual(response.status_code, 401)
@@ -266,8 +266,8 @@ class AuthApiTestCase(unittest.TestCase):
         next_response = Response(status_code=200)
         call_next = AsyncMock(return_value=next_response)
 
-        with patch("api.middlewares.auth.is_auth_enabled", return_value=True):
-            with patch("api.middlewares.auth.verify_session", return_value=True):
+        with patch("daily_stock_analysis.api.middlewares.auth.is_auth_enabled", return_value=True):
+            with patch("daily_stock_analysis.api.middlewares.auth.verify_session", return_value=True):
                 response = asyncio.run(middleware.dispatch(request, call_next))
 
         self.assertEqual(response.status_code, 200)
@@ -288,7 +288,7 @@ class AuthApiTestCase(unittest.TestCase):
         request = Request(scope)
         middleware = AuthMiddleware(app=MagicMock())
 
-        with patch("api.middlewares.auth.is_auth_enabled", return_value=True):
+        with patch("daily_stock_analysis.api.middlewares.auth.is_auth_enabled", return_value=True):
             response = asyncio.run(middleware.dispatch(request, AsyncMock(return_value=Response(status_code=200))))
 
         self.assertEqual(response.status_code, 401)
@@ -310,7 +310,7 @@ class AuthApiTestCase(unittest.TestCase):
         next_response = Response(status_code=200)
         call_next = AsyncMock(return_value=next_response)
 
-        with patch("api.middlewares.auth.is_auth_enabled", return_value=False):
+        with patch("daily_stock_analysis.api.middlewares.auth.is_auth_enabled", return_value=False):
             response = asyncio.run(middleware.dispatch(request, call_next))
 
         self.assertEqual(response.status_code, 200)

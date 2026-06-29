@@ -13,8 +13,8 @@ except ModuleNotFoundError:
     from tests.litellm_stub import ensure_litellm_stub
     ensure_litellm_stub()
 
-from bot.commands.market import MarketCommand
-from bot.models import BotMessage, ChatType
+from daily_stock_analysis.bot.commands.market import MarketCommand
+from daily_stock_analysis.bot.models import BotMessage, ChatType
 
 
 def _make_message() -> BotMessage:
@@ -71,7 +71,7 @@ class MarketCommandRegionFilterTestCase(unittest.TestCase):
         trading_calendar_module = MagicMock()
         trading_calendar_module.get_open_markets_today.return_value = open_markets
         # Re-export the real compute_effective_region semantics
-        from src.core.trading_calendar import compute_effective_region
+        from daily_stock_analysis.core.trading_calendar import compute_effective_region
         trading_calendar_module.compute_effective_region.side_effect = compute_effective_region
 
         patches = [

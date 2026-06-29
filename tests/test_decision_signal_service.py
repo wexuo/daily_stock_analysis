@@ -13,11 +13,11 @@ from types import SimpleNamespace
 
 import pytest
 
-from src.config import Config
-from src.repositories.decision_signal_repo import DecisionSignalCreateResult
-from src.services.decision_signal_service import DecisionSignalService, DecisionSignalStorageError
-from src.storage import DatabaseManager, DecisionSignalRecord, utc_naive_now
-from src.utils.sanitize import sanitize_decision_signal_text, sanitize_diagnostic_text
+from daily_stock_analysis.config import Config
+from daily_stock_analysis.repositories.decision_signal_repo import DecisionSignalCreateResult
+from daily_stock_analysis.services.decision_signal_service import DecisionSignalService, DecisionSignalStorageError
+from daily_stock_analysis.storage import DatabaseManager, DecisionSignalRecord, utc_naive_now
+from daily_stock_analysis.utils.sanitize import sanitize_decision_signal_text, sanitize_diagnostic_text
 
 
 def test_service_imports_without_api_bootstrap() -> None:
@@ -26,7 +26,7 @@ def test_service_imports_without_api_bootstrap() -> None:
         [
             sys.executable,
             "-c",
-            "from src.services.decision_signal_service import DecisionSignalService; "
+            "from daily_stock_analysis.services.decision_signal_service import DecisionSignalService; "
             "print(DecisionSignalService.__name__)",
         ],
         cwd=repo_root,

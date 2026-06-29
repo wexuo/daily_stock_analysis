@@ -14,18 +14,18 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pandas as pd
 
-from src.config import Config
-from src.notification import ChannelAttemptResult, NotificationDispatchResult
-from src.services.alert_indicators import (
+from daily_stock_analysis.config import Config
+from daily_stock_analysis.notification import ChannelAttemptResult, NotificationDispatchResult
+from daily_stock_analysis.services.alert_indicators import (
     _calculate_rsi,
     compute_requested_days,
     compute_required_bars,
     evaluate_indicator_alert,
     normalize_indicator_parameters,
 )
-from src.services.alert_service import AlertService
-from src.services.alert_worker import AlertWorker
-from src.storage import DatabaseManager
+from daily_stock_analysis.services.alert_service import AlertService
+from daily_stock_analysis.services.alert_worker import AlertWorker
+from daily_stock_analysis.storage import DatabaseManager
 
 
 class AlertIndicatorHelperTestCase(unittest.TestCase):

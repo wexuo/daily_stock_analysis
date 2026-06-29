@@ -7,9 +7,9 @@ from unittest.mock import MagicMock, patch
 
 from fastapi.testclient import TestClient
 
-from api.app import create_app
-from src.config import Config
-from src.storage import DatabaseManager
+from daily_stock_analysis.api.app import create_app
+from daily_stock_analysis.config import Config
+from daily_stock_analysis.storage import DatabaseManager
 
 
 def teardown_function() -> None:
@@ -47,7 +47,7 @@ def test_chat_session_messages_api_does_not_expose_provider_trace(tmp_path: Path
         estimated_tokens=10,
     )
 
-    with patch("api.middlewares.auth.is_auth_enabled", return_value=False):
+    with patch("daily_stock_analysis.api.middlewares.auth.is_auth_enabled", return_value=False):
         client = TestClient(create_app(static_dir=tmp_path / "static"))
         response = client.get(f"/api/v1/agent/chat/sessions/{session_id}")
 
@@ -72,9 +72,9 @@ def test_agent_chat_forwards_stock_context_to_executor(tmp_path: Path) -> None:
     )
     config = SimpleNamespace(is_agent_available=lambda: True)
 
-    with patch("api.middlewares.auth.is_auth_enabled", return_value=False):
-        with patch("api.v1.endpoints.agent.get_config", return_value=config):
-            with patch("api.v1.endpoints.agent._build_executor", return_value=executor):
+    with patch("daily_stock_analysis.api.middlewares.auth.is_auth_enabled", return_value=False):
+        with patch("daily_stock_analysis.api.v1.endpoints.agent.get_config", return_value=config):
+            with patch("daily_stock_analysis.api.v1.endpoints.agent._build_executor", return_value=executor):
                 client = TestClient(create_app(static_dir=tmp_path / "static"))
                 response = client.post(
                     "/api/v1/agent/chat",
@@ -106,9 +106,9 @@ def test_agent_chat_stream_forwards_stock_context_to_executor(tmp_path: Path) ->
     )
     config = SimpleNamespace(is_agent_available=lambda: True)
 
-    with patch("api.middlewares.auth.is_auth_enabled", return_value=False):
-        with patch("api.v1.endpoints.agent.get_config", return_value=config):
-            with patch("api.v1.endpoints.agent._build_executor", return_value=executor):
+    with patch("daily_stock_analysis.api.middlewares.auth.is_auth_enabled", return_value=False):
+        with patch("daily_stock_analysis.api.v1.endpoints.agent.get_config", return_value=config):
+            with patch("daily_stock_analysis.api.v1.endpoints.agent._build_executor", return_value=executor):
                 client = TestClient(create_app(static_dir=tmp_path / "static"))
                 response = client.post(
                     "/api/v1/agent/chat/stream",

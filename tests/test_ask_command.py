@@ -13,9 +13,9 @@ except ModuleNotFoundError:
 
     ensure_litellm_stub()
 
-from bot.commands.ask import AskCommand
-from bot.models import BotMessage, ChatType
-from src.agent.skills.base import Skill
+from daily_stock_analysis.bot.commands.ask import AskCommand
+from daily_stock_analysis.bot.models import BotMessage, ChatType
+from daily_stock_analysis.agent.skills.base import Skill
 
 
 class AskCommandSkillSelectionTestCase(unittest.TestCase):

@@ -5,11 +5,11 @@ import unittest
 from types import SimpleNamespace
 from unittest.mock import MagicMock, patch
 
-from src.agent.tools.search_tools import (
+from daily_stock_analysis.agent.tools.search_tools import (
     _handle_search_comprehensive_intel,
     _handle_search_stock_news,
 )
-from src.search_service import SearchResponse, SearchResult
+from daily_stock_analysis.search_service import SearchResponse, SearchResult
 
 
 def _response(query: str, *, success: bool = True) -> SearchResponse:

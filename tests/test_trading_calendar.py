@@ -11,7 +11,7 @@ from zoneinfo import ZoneInfo
 
 import pandas as pd
 
-from src.core import trading_calendar
+from daily_stock_analysis.core import trading_calendar
 
 
 class _FakeCalendar:

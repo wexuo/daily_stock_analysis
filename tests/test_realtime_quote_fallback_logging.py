@@ -21,10 +21,10 @@ except ValueError:
 if not json_repair_available and "json_repair" not in sys.modules:
     sys.modules["json_repair"] = MagicMock()
 
-from data_provider.base import DataFetcherManager
-from data_provider.realtime_types import RealtimeSource, UnifiedRealtimeQuote
-from src.core.pipeline import StockAnalysisPipeline
-from src.enums import ReportType
+from daily_stock_analysis.data_provider.base import DataFetcherManager
+from daily_stock_analysis.data_provider.realtime_types import RealtimeSource, UnifiedRealtimeQuote
+from daily_stock_analysis.core.pipeline import StockAnalysisPipeline
+from daily_stock_analysis.enums import ReportType
 
 
 class _DummyFetcher:
@@ -209,7 +209,7 @@ def test_pipeline_warns_once_when_all_realtime_sources_fail(caplog):
 
 @patch("src.config.get_config")
 def test_event_monitor_keeps_manager_failure_summary_for_direct_quote_call(mock_get_config, caplog):
-    from src.agent.events import EventMonitor, PriceAlert
+    from daily_stock_analysis.agent.events import EventMonitor, PriceAlert
 
     mock_get_config.return_value = SimpleNamespace(
         enable_realtime_quote=True,

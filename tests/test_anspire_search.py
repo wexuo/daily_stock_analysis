@@ -45,8 +45,8 @@ if "newspaper" not in sys.modules:
     mock_np.Config = MagicMock()
     sys.modules["newspaper"] = mock_np
 
-from src.config import Config, get_config
-from src.search_service import (
+from daily_stock_analysis.config import Config, get_config
+from daily_stock_analysis.search_service import (
     AnspireSearchProvider,
     SearchService,
     get_search_service,
@@ -527,7 +527,7 @@ class TestAnspireIntegration(unittest.TestCase):
 def run_manual_test():
     """手动测试函数（用于快速验证）"""
     import logging
-    from src.config import get_config
+    from daily_stock_analysis.config import get_config
     
     # 配置日志
     logging.basicConfig(

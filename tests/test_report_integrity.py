@@ -17,7 +17,7 @@ try:
 except ModuleNotFoundError:
     sys.modules["litellm"] = MagicMock()
 
-from src.analyzer import AnalysisResult, GeminiAnalyzer, check_content_integrity, apply_placeholder_fill
+from daily_stock_analysis.analyzer import AnalysisResult, GeminiAnalyzer, check_content_integrity, apply_placeholder_fill
 
 
 class TestCheckContentIntegrity(unittest.TestCase):

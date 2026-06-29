@@ -10,8 +10,8 @@ import requests
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from data_provider.base import BaseFetcher, DataFetchError, DataFetcherManager
-from data_provider.efinance_fetcher import EfinanceFetcher
+from daily_stock_analysis.data_provider.base import BaseFetcher, DataFetchError, DataFetcherManager
+from daily_stock_analysis.data_provider.efinance_fetcher import EfinanceFetcher
 
 
 def _sample_df() -> pd.DataFrame:

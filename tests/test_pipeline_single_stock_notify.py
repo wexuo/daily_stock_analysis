@@ -17,9 +17,9 @@ from tests.litellm_stub import ensure_litellm_stub
 
 ensure_litellm_stub()
 
-from src.analyzer import AnalysisResult
-from src.core.pipeline import StockAnalysisPipeline
-from src.enums import ReportType
+from daily_stock_analysis.analyzer import AnalysisResult
+from daily_stock_analysis.core.pipeline import StockAnalysisPipeline
+from daily_stock_analysis.enums import ReportType
 
 
 class _TrackingNotifier:

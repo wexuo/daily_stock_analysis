@@ -15,7 +15,7 @@ if "newspaper" not in sys.modules:
     mock_np.Config = MagicMock()
     sys.modules["newspaper"] = mock_np
 
-from src.search_service import SerpAPISearchProvider
+from daily_stock_analysis.search_service import SerpAPISearchProvider
 
 
 class _FakeGoogleSearch:

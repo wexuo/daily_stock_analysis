@@ -16,10 +16,10 @@ from tests.litellm_stub import ensure_litellm_stub
 
 ensure_litellm_stub()
 
-from api.middlewares.auth import add_auth_middleware
-from api.middlewares.error_handler import add_error_handlers
-from api.v1.endpoints import system_config
-from api.v1.schemas.system_config import (
+from daily_stock_analysis.api.middlewares.auth import add_auth_middleware
+from daily_stock_analysis.api.middlewares.error_handler import add_error_handlers
+from daily_stock_analysis.api.v1.endpoints import system_config
+from daily_stock_analysis.api.v1.schemas.system_config import (
     DiscoverLLMChannelModelsRequest,
     ImportSystemConfigRequest,
     TestLLMChannelRequest,
@@ -27,9 +27,9 @@ from api.v1.schemas.system_config import (
     UpdateSystemConfigRequest,
 )
 import src.auth as auth
-from src.config import Config
-from src.core.config_manager import ConfigManager
-from src.services.system_config_service import SystemConfigService
+from daily_stock_analysis.config import Config
+from daily_stock_analysis.core.config_manager import ConfigManager
+from daily_stock_analysis.services.system_config_service import SystemConfigService
 
 
 class SystemConfigApiTestCase(unittest.TestCase):

@@ -10,10 +10,10 @@ from datetime import date
 from types import SimpleNamespace
 from unittest.mock import MagicMock, patch
 
-from src.analyzer import GeminiAnalyzer
-from src.core.pipeline import StockAnalysisPipeline
-from src.enums import ReportType
-from src.services.daily_market_context import DailyMarketContext
+from daily_stock_analysis.analyzer import GeminiAnalyzer
+from daily_stock_analysis.core.pipeline import StockAnalysisPipeline
+from daily_stock_analysis.enums import ReportType
+from daily_stock_analysis.services.daily_market_context import DailyMarketContext
 
 
 def _pipeline_config(*, daily_market_context_enabled: bool) -> SimpleNamespace:

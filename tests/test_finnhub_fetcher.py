@@ -23,7 +23,7 @@ class TestFinnhubFetcherNormalize(unittest.TestCase):
     """Test _normalize_data with raw Finnhub candle response."""
 
     def setUp(self):
-        from data_provider.finnhub_fetcher import FinnhubFetcher
+        from daily_stock_analysis.data_provider.finnhub_fetcher import FinnhubFetcher
         self.fetcher = FinnhubFetcher()
 
     def test_normalize_candle_data(self):
@@ -66,7 +66,7 @@ class TestFinnhubFetcherFetchRaw(unittest.TestCase):
     """Test _fetch_raw_data with mocked HTTP."""
 
     def setUp(self):
-        from data_provider.finnhub_fetcher import FinnhubFetcher
+        from daily_stock_analysis.data_provider.finnhub_fetcher import FinnhubFetcher
         self.fetcher = FinnhubFetcher()
         self.fetcher._api_key = "test_key"
 
@@ -87,7 +87,7 @@ class TestFinnhubFetcherFetchRaw(unittest.TestCase):
 
     @patch('data_provider.finnhub_fetcher.requests.get')
     def test_fetch_raw_empty_response(self, mock_get):
-        from data_provider.base import DataFetchError
+        from daily_stock_analysis.data_provider.base import DataFetchError
         mock_get.return_value = _make_mock_response({
             'c': [], 'h': [], 'l': [], 'o': [], 't': [], 'v': [], 's': 'no_data',
         })
@@ -96,7 +96,7 @@ class TestFinnhubFetcherFetchRaw(unittest.TestCase):
 
     @patch('data_provider.finnhub_fetcher.requests.get')
     def test_fetch_raw_http_error(self, mock_get):
-        from data_provider.base import DataFetchError
+        from daily_stock_analysis.data_provider.base import DataFetchError
         mock_get.side_effect = Exception("connection timeout")
         with self.assertRaises(DataFetchError):
             self.fetcher._fetch_raw_data('AAPL', '2024-06-10', '2024-06-11')
@@ -106,7 +106,7 @@ class TestFinnhubFetcherRealtimeQuote(unittest.TestCase):
     """Test get_realtime_quote with mocked HTTP."""
 
     def setUp(self):
-        from data_provider.finnhub_fetcher import FinnhubFetcher
+        from daily_stock_analysis.data_provider.finnhub_fetcher import FinnhubFetcher
         self.fetcher = FinnhubFetcher()
         self.fetcher._api_key = "test_key"
 
@@ -144,7 +144,7 @@ class TestFinnhubFetcherStockName(unittest.TestCase):
     """Test get_stock_name with mocked HTTP."""
 
     def setUp(self):
-        from data_provider.finnhub_fetcher import FinnhubFetcher
+        from daily_stock_analysis.data_provider.finnhub_fetcher import FinnhubFetcher
         self.fetcher = FinnhubFetcher()
         self.fetcher._api_key = "test_key"
 
@@ -174,7 +174,7 @@ class TestFinnhubFetcherInit(unittest.TestCase):
     @patch('src.config.get_config')
     def test_init_with_key(self, mock_config):
         mock_config.return_value = MagicMock(finnhub_api_key='sk-test-123')
-        from data_provider.finnhub_fetcher import FinnhubFetcher
+        from daily_stock_analysis.data_provider.finnhub_fetcher import FinnhubFetcher
         f = FinnhubFetcher()
         self.assertEqual(f._api_key, 'sk-test-123')
 
@@ -183,7 +183,7 @@ class TestFinnhubFetcherInit(unittest.TestCase):
     def test_init_without_key(self, mock_config):
         os.environ.pop('FINNHUB_API_KEY', None)
         mock_config.return_value = MagicMock(finnhub_api_key=None)
-        from data_provider.finnhub_fetcher import FinnhubFetcher
+        from daily_stock_analysis.data_provider.finnhub_fetcher import FinnhubFetcher
         f = FinnhubFetcher()
         self.assertIsNone(f._api_key)
 
@@ -202,7 +202,7 @@ class TestFinnhubFetcherRegistration(unittest.TestCase):
             longbridge_access_token=None,
             tickflow_api_key=None,
         )
-        from data_provider.base import DataFetcherManager
+        from daily_stock_analysis.data_provider.base import DataFetcherManager
         mgr = DataFetcherManager()
         names = [f.name for f in mgr._get_fetchers_snapshot()]
         self.assertIn('FinnhubFetcher', names)
@@ -218,7 +218,7 @@ class TestFinnhubFetcherRegistration(unittest.TestCase):
             longbridge_access_token=None,
             tickflow_api_key=None,
         )
-        from data_provider.base import DataFetcherManager
+        from daily_stock_analysis.data_provider.base import DataFetcherManager
         mgr = DataFetcherManager()
         names = [f.name for f in mgr._get_fetchers_snapshot()]
         self.assertNotIn('FinnhubFetcher', names)
@@ -239,7 +239,7 @@ class TestUSDailyRoutingFallback(unittest.TestCase):
             longbridge_access_token=None,
             tickflow_api_key=None,
         )
-        from data_provider.base import DataFetcherManager
+        from daily_stock_analysis.data_provider.base import DataFetcherManager
         mgr = DataFetcherManager()
 
         # Verify both fetchers are registered

@@ -40,9 +40,9 @@ def _build_optional_module_stubs() -> dict[str, ModuleType]:
 
 sys.modules.update(_build_optional_module_stubs())
 import src.core.market_review as market_review_module
-from src.config import Config
-from src.services.run_diagnostics import activate_run_diagnostic_context, reset_run_diagnostic_context
-from src.storage import AnalysisHistory, DatabaseManager
+from daily_stock_analysis.config import Config
+from daily_stock_analysis.services.run_diagnostics import activate_run_diagnostic_context, reset_run_diagnostic_context
+from daily_stock_analysis.storage import AnalysisHistory, DatabaseManager
 
 run_market_review = market_review_module.run_market_review
 

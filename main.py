@@ -29,7 +29,7 @@ from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
 from dotenv import dotenv_values
-from src.config import setup_env
+from daily_stock_analysis.config import setup_env
 
 _INITIAL_PROCESS_ENV = dict(os.environ)
 setup_env()
@@ -64,10 +64,10 @@ import time
 import uuid
 from datetime import date, datetime, timezone, timedelta
 
-from data_provider.base import canonical_stock_code
-from src.webui_frontend import prepare_webui_frontend_assets
-from src.config import get_config, Config
-from src.logging_config import setup_logging
+from daily_stock_analysis.data_provider.base import canonical_stock_code
+from daily_stock_analysis.webui_frontend import prepare_webui_frontend_assets
+from daily_stock_analysis.config import get_config, Config
+from daily_stock_analysis.logging_config import setup_logging
 
 
 logger = logging.getLogger(__name__)
@@ -90,7 +90,7 @@ def _warn_if_public_webui_without_auth(host: str) -> None:
     if not _is_public_bind_host(host):
         return
 
-    from src.auth import is_auth_enabled
+    from daily_stock_analysis.auth import is_auth_enabled
 
     if is_auth_enabled():
         return
@@ -140,7 +140,7 @@ def _bootstrap_environment() -> None:
     if _env_bootstrapped:
         return
 
-    from src.config import setup_env
+    from daily_stock_analysis.config import setup_env
 
     setup_env()
 
@@ -199,7 +199,7 @@ def _get_stock_analysis_pipeline():
     that never call ``main()`` still get ``USE_PROXY`` applied.
     """
     _bootstrap_environment()
-    from src.core.pipeline import StockAnalysisPipeline as _Pipeline
+    from daily_stock_analysis.core.pipeline import StockAnalysisPipeline as _Pipeline
 
     return _Pipeline
 
@@ -437,7 +437,7 @@ def _compute_trading_day_filter(
     if force_run or not getattr(config, 'trading_day_check_enabled', True):
         return (stock_codes, None, False)
 
-    from src.core.trading_calendar import (
+    from daily_stock_analysis.core.trading_calendar import (
         get_market_for_stock,
         get_open_markets_today,
         compute_effective_region,
@@ -466,7 +466,7 @@ def _run_market_review_with_shared_lock(
     run_market_review_func: Callable[..., Any],
     **kwargs: Any,
 ) -> Any:
-    from src.core.market_review_lock import (
+    from daily_stock_analysis.core.market_review_lock import (
         release_market_review_lock,
         try_acquire_market_review_lock,
     )
@@ -497,7 +497,7 @@ def _is_multi_market_region(region: str) -> bool:
 def _refresh_stock_index_cache_for_analysis(config: Config) -> None:
     """Best-effort stock-index refresh for CLI/scheduled analysis paths."""
     try:
-        from src.services.stock_index_remote_service import (
+        from daily_stock_analysis.services.stock_index_remote_service import (
             refresh_remote_stock_index_cache,
             settings_from_config,
         )
@@ -527,7 +527,7 @@ def _prime_daily_market_context(
     if no_market_review or not region:
         return ("", "") if return_full_report else ""
 
-    from src.services.daily_market_context import DailyMarketContextService
+    from daily_stock_analysis.services.daily_market_context import DailyMarketContextService
 
     if not _is_multi_market_region(region):
         service = getattr(pipeline, "_daily_market_context_service", None)
@@ -588,7 +588,7 @@ def _resolve_daily_market_context_target_date(
     normalized_region = str(region or "cn").strip().lower()
     market = normalized_region if normalized_region in {"cn", "hk", "us"} else "cn"
 
-    from src.core.trading_calendar import get_effective_trading_date
+    from daily_stock_analysis.core.trading_calendar import get_effective_trading_date
 
     return get_effective_trading_date(market, current_time=current_time)
 
@@ -647,8 +647,8 @@ def run_full_analysis(
     """
     # Import pipeline modules outside the broad try/except so that import-time
     # failures propagate to the caller instead of being silently swallowed.
-    from src.core.market_review import run_market_review
-    from src.core.pipeline import StockAnalysisPipeline
+    from daily_stock_analysis.core.market_review import run_market_review
+    from daily_stock_analysis.core.pipeline import StockAnalysisPipeline
 
     try:
         _refresh_stock_index_cache_for_analysis(config)
@@ -904,7 +904,7 @@ def run_full_analysis(
 
         # === 新增：生成飞书云文档 ===
         try:
-            from src.feishu_doc import FeishuDocManager
+            from daily_stock_analysis.feishu_doc import FeishuDocManager
 
             feishu_doc = FeishuDocManager()
             if feishu_doc.is_configured() and (results or market_report):
@@ -947,7 +947,7 @@ def run_full_analysis(
         # === Auto backtest ===
         try:
             if getattr(config, 'backtest_enabled', False):
-                from src.services.backtest_service import BacktestService
+                from daily_stock_analysis.services.backtest_service import BacktestService
 
                 logger.info("开始自动回测...")
                 service = BacktestService()
@@ -992,7 +992,7 @@ def start_api_server(host: str, port: int, config: Config) -> None:
     def run_server():
         level_name = (config.log_level or "INFO").lower()
         uvicorn.run(
-            "api.app:app",
+            "daily_stock_analysis.api.app:app",
             host=host,
             port=port,
             log_level=level_name,
@@ -1015,7 +1015,7 @@ def start_bot_stream_clients(config: Config) -> None:
     # 启动钉钉 Stream 客户端
     if config.dingtalk_stream_enabled:
         try:
-            from bot.platforms import start_dingtalk_stream_background, DINGTALK_STREAM_AVAILABLE
+            from daily_stock_analysis.bot.platforms import start_dingtalk_stream_background, DINGTALK_STREAM_AVAILABLE
             if DINGTALK_STREAM_AVAILABLE:
                 if start_dingtalk_stream_background():
                     logger.info("[Main] Dingtalk Stream client started in background.")
@@ -1030,7 +1030,7 @@ def start_bot_stream_clients(config: Config) -> None:
     # 启动飞书 Stream 客户端
     if getattr(config, 'feishu_stream_enabled', False):
         try:
-            from bot.platforms import start_feishu_stream_background, FEISHU_SDK_AVAILABLE
+            from daily_stock_analysis.bot.platforms import start_feishu_stream_background, FEISHU_SDK_AVAILABLE
             if FEISHU_SDK_AVAILABLE:
                 if start_feishu_stream_background():
                     logger.info("[Main] Feishu Stream client started in background.")
@@ -1068,7 +1068,7 @@ def _build_schedule_time_provider(default_schedule_time: str):
     3. Documented system default ``"18:00"`` → always fall back here so
        that clearing SCHEDULE_TIME in WebUI correctly resets the schedule.
     """
-    from src.core.config_manager import ConfigManager
+    from daily_stock_analysis.core.config_manager import ConfigManager
 
     _SYSTEM_DEFAULT_SCHEDULE_TIME = "18:00"
     manager = ConfigManager()
@@ -1132,7 +1132,7 @@ def main() -> int:
         logger.warning(warning)
 
     if getattr(args, "check_notify", False):
-        from src.services.notification_diagnostics import (
+        from daily_stock_analysis.services.notification_diagnostics import (
             format_notification_diagnostics,
             run_notification_diagnostics,
         )
@@ -1202,7 +1202,7 @@ def main() -> int:
         # 模式0: 回测
         if getattr(args, 'backtest', False):
             logger.info("模式: 回测")
-            from src.services.backtest_service import BacktestService
+            from daily_stock_analysis.services.backtest_service import BacktestService
 
             service = BacktestService()
             stats = service.run_backtest(
@@ -1218,8 +1218,8 @@ def main() -> int:
 
         # 模式1: 仅大盘复盘
         if args.market_review:
-            from src.core.market_review import run_market_review
-            from src.core.market_review_runtime import build_market_review_runtime
+            from daily_stock_analysis.core.market_review import run_market_review
+            from daily_stock_analysis.core.market_review_runtime import build_market_review_runtime
 
             # Issue #373: Trading day check for market-review-only mode.
             # Do NOT use _compute_trading_day_filter here: that helper checks
@@ -1227,7 +1227,7 @@ def main() -> int:
             # explicit --market-review invocation when the flag is disabled.
             effective_region = None
             if not getattr(args, 'force_run', False) and getattr(config, 'trading_day_check_enabled', True):
-                from src.core.trading_calendar import get_open_markets_today, compute_effective_region as _compute_region
+                from daily_stock_analysis.core.trading_calendar import get_open_markets_today, compute_effective_region as _compute_region
                 open_markets = get_open_markets_today()
                 effective_region = _compute_region(
                     getattr(config, 'market_review_region', 'cn') or 'cn', open_markets
@@ -1265,7 +1265,7 @@ def main() -> int:
 
             logger.info(f"启动时立即执行: {should_run_immediately}")
 
-            from src.scheduler import run_with_schedule
+            from daily_stock_analysis.scheduler import run_with_schedule
             scheduled_stock_codes = _resolve_scheduled_stock_codes(stock_codes)
             schedule_time_provider = _build_schedule_time_provider(config.schedule_time)
 
@@ -1275,7 +1275,7 @@ def main() -> int:
 
             background_tasks = []
             if getattr(config, 'agent_event_monitor_enabled', False):
-                from src.services.alert_worker import AlertWorker
+                from daily_stock_analysis.services.alert_worker import AlertWorker
 
                 interval_minutes = max(1, getattr(config, 'agent_event_monitor_interval_minutes', 5))
                 alert_worker = AlertWorker(config_provider=_reload_runtime_config)

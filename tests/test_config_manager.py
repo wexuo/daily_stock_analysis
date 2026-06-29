@@ -8,7 +8,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from src.core.config_manager import ConfigManager
+from daily_stock_analysis.core.config_manager import ConfigManager
 
 
 class ConfigManagerTestCase(unittest.TestCase):

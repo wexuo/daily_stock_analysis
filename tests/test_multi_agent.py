@@ -26,8 +26,8 @@ try:
 except ModuleNotFoundError:
     sys.modules["litellm"] = MagicMock()
 
-from src.agent.orchestrator import _extract_stock_code, _COMMON_WORDS
-from src.agent.protocols import (
+from daily_stock_analysis.agent.orchestrator import _extract_stock_code, _COMMON_WORDS
+from daily_stock_analysis.agent.protocols import (
     AgentContext,
     AgentOpinion,
     AgentRunStats,
@@ -35,9 +35,9 @@ from src.agent.protocols import (
     StageResult,
     StageStatus,
 )
-from src.agent.stock_scope import StockScope, resolve_stock_scope
-from src.config import AGENT_MAX_STEPS_DEFAULT, Config
-from src.storage import DatabaseManager
+from daily_stock_analysis.agent.stock_scope import StockScope, resolve_stock_scope
+from daily_stock_analysis.config import AGENT_MAX_STEPS_DEFAULT, Config
+from daily_stock_analysis.storage import DatabaseManager
 
 
 # ============================================================
@@ -521,7 +521,7 @@ class TestStrategyRouter(unittest.TestCase):
     """Test the legacy StrategyRouter alias for SkillRouter."""
 
     def test_user_requested_strategies_take_priority(self):
-        from src.agent.strategies.router import StrategyRouter
+        from daily_stock_analysis.agent.strategies.router import StrategyRouter
         router = StrategyRouter()
         ctx = AgentContext(query="test")
         ctx.meta["strategies_requested"] = ["chan_theory", "wave_theory"]
@@ -529,7 +529,7 @@ class TestStrategyRouter(unittest.TestCase):
         self.assertEqual(result, ["chan_theory", "wave_theory"])
 
     def test_user_requested_capped_at_max(self):
-        from src.agent.strategies.router import StrategyRouter
+        from daily_stock_analysis.agent.strategies.router import StrategyRouter
         router = StrategyRouter()
         ctx = AgentContext()
         ctx.meta["strategies_requested"] = ["a", "b", "c", "d", "e"]
@@ -546,7 +546,7 @@ class TestStrategyRouter(unittest.TestCase):
     )
     @patch("src.config.get_config", return_value=SimpleNamespace(agent_skills=["chan_theory", "wave_theory"]))
     def test_manual_mode_uses_configured_agent_skills(self, _mock_config, _mock_available, _mock):
-        from src.agent.strategies.router import StrategyRouter
+        from daily_stock_analysis.agent.strategies.router import StrategyRouter
         router = StrategyRouter()
         ctx = AgentContext()
         result = router.select_strategies(ctx)
@@ -562,14 +562,14 @@ class TestStrategyRouter(unittest.TestCase):
     )
     @patch("src.config.get_config", return_value=SimpleNamespace(agent_skills=[]))
     def test_manual_mode_falls_back_to_defaults_when_no_skills_configured(self, _mock_config, _mock_available, _mock):
-        from src.agent.strategies.router import StrategyRouter, _DEFAULT_STRATEGIES
+        from daily_stock_analysis.agent.strategies.router import StrategyRouter, _DEFAULT_STRATEGIES
         router = StrategyRouter()
         ctx = AgentContext()
         result = router.select_strategies(ctx)
         self.assertEqual(result, list(_DEFAULT_STRATEGIES[:3]))
 
     def test_detect_regime_bullish(self):
-        from src.agent.strategies.router import StrategyRouter
+        from daily_stock_analysis.agent.strategies.router import StrategyRouter
         router = StrategyRouter()
         ctx = AgentContext()
         ctx.add_opinion(AgentOpinion(
@@ -582,7 +582,7 @@ class TestStrategyRouter(unittest.TestCase):
         self.assertEqual(regime, "trending_up")
 
     def test_detect_regime_bearish(self):
-        from src.agent.strategies.router import StrategyRouter
+        from daily_stock_analysis.agent.strategies.router import StrategyRouter
         router = StrategyRouter()
         ctx = AgentContext()
         ctx.add_opinion(AgentOpinion(
@@ -595,7 +595,7 @@ class TestStrategyRouter(unittest.TestCase):
         self.assertEqual(regime, "trending_down")
 
     def test_detect_regime_none_without_technical(self):
-        from src.agent.strategies.router import StrategyRouter
+        from daily_stock_analysis.agent.strategies.router import StrategyRouter
         router = StrategyRouter()
         ctx = AgentContext()
         regime = router._detect_regime(ctx)
@@ -610,7 +610,7 @@ class TestStrategyAggregator(unittest.TestCase):
     """Test StrategyAggregator consensus logic."""
 
     def test_no_strategy_opinions_returns_none(self):
-        from src.agent.strategies.aggregator import StrategyAggregator
+        from daily_stock_analysis.agent.strategies.aggregator import StrategyAggregator
         agg = StrategyAggregator()
         ctx = AgentContext()
         ctx.add_opinion(AgentOpinion(agent_name="technical", signal="buy", confidence=0.8))
@@ -618,7 +618,7 @@ class TestStrategyAggregator(unittest.TestCase):
         self.assertIsNone(result)
 
     def test_single_strategy_consensus(self):
-        from src.agent.strategies.aggregator import StrategyAggregator
+        from daily_stock_analysis.agent.strategies.aggregator import StrategyAggregator
         agg = StrategyAggregator()
         ctx = AgentContext()
         ctx.add_opinion(AgentOpinion(agent_name="strategy_bull_trend", signal="buy", confidence=0.7))
@@ -628,7 +628,7 @@ class TestStrategyAggregator(unittest.TestCase):
         self.assertEqual(result.signal, "buy")
 
     def test_mixed_signals_produce_hold(self):
-        from src.agent.strategies.aggregator import StrategyAggregator
+        from daily_stock_analysis.agent.strategies.aggregator import StrategyAggregator
         agg = StrategyAggregator()
         ctx = AgentContext()
         ctx.add_opinion(AgentOpinion(agent_name="strategy_a", signal="buy", confidence=0.6))
@@ -647,7 +647,7 @@ class TestPortfolioAgentPostProcess(unittest.TestCase):
     """Test PortfolioAgent.post_process uses try_parse_json correctly."""
 
     def _make_agent(self):
-        from src.agent.agents.portfolio_agent import PortfolioAgent
+        from daily_stock_analysis.agent.agents.portfolio_agent import PortfolioAgent
         mock_registry = MagicMock()
         mock_adapter = MagicMock()
         return PortfolioAgent(tool_registry=mock_registry, llm_adapter=mock_adapter)
@@ -683,7 +683,7 @@ class TestDecisionAgentPostProcess(unittest.TestCase):
     """Test DecisionAgent dashboard normalization behaviour."""
 
     def test_normalizes_strong_decision_type_to_legacy_enum(self):
-        from src.agent.agents.decision_agent import DecisionAgent
+        from daily_stock_analysis.agent.agents.decision_agent import DecisionAgent
 
         agent = DecisionAgent(tool_registry=MagicMock(), llm_adapter=MagicMock())
         ctx = AgentContext(query="test", stock_code="600519")
@@ -705,7 +705,7 @@ class TestIntelAgentPostProcess(unittest.TestCase):
     """Test IntelAgent JSON parsing and context caching behaviour."""
 
     def test_repairs_json_and_caches_intel_context(self):
-        from src.agent.agents.intel_agent import IntelAgent
+        from daily_stock_analysis.agent.agents.intel_agent import IntelAgent
 
         agent = IntelAgent(tool_registry=MagicMock(), llm_adapter=MagicMock())
         ctx = AgentContext(query="test", stock_code="600519")
@@ -735,7 +735,7 @@ class TestOrchestratorModes(unittest.TestCase):
     """Test that _build_agent_chain returns the right agents for each mode."""
 
     def _make_orchestrator(self, mode="standard"):
-        from src.agent.orchestrator import AgentOrchestrator
+        from daily_stock_analysis.agent.orchestrator import AgentOrchestrator
         mock_registry = MagicMock()
         mock_adapter = MagicMock()
         return AgentOrchestrator(
@@ -854,7 +854,7 @@ class TestOrchestratorExecution(unittest.TestCase):
 
     @staticmethod
     def _make_orchestrator(config=None):
-        from src.agent.orchestrator import AgentOrchestrator
+        from daily_stock_analysis.agent.orchestrator import AgentOrchestrator
         return AgentOrchestrator(
             tool_registry=MagicMock(),
             llm_adapter=MagicMock(),
@@ -1138,7 +1138,7 @@ class TestOrchestratorExecution(unittest.TestCase):
         )
 
     def test_run_wraps_orchestrator_result(self):
-        from src.agent.orchestrator import OrchestratorResult
+        from daily_stock_analysis.agent.orchestrator import OrchestratorResult
 
         orch = self._make_orchestrator()
         fake_result = OrchestratorResult(success=True, content="done", total_steps=2, total_tokens=11, model="x")
@@ -1150,7 +1150,7 @@ class TestOrchestratorExecution(unittest.TestCase):
         self.assertEqual(result.total_steps, 2)
 
     def test_chat_loads_prior_history_into_context(self):
-        from src.agent.orchestrator import OrchestratorResult
+        from daily_stock_analysis.agent.orchestrator import OrchestratorResult
 
         orch = self._make_orchestrator()
         history = [
@@ -1172,7 +1172,7 @@ class TestOrchestratorExecution(unittest.TestCase):
         self.assertEqual(captured["history"], history)
 
     def test_chat_uses_compressed_history_builder(self):
-        from src.agent.orchestrator import OrchestratorResult
+        from daily_stock_analysis.agent.orchestrator import OrchestratorResult
 
         orch = self._make_orchestrator()
 
@@ -1187,7 +1187,7 @@ class TestOrchestratorExecution(unittest.TestCase):
         self.assertIs(build_history.call_args.args[1], orch.llm_adapter)
 
     def test_chat_resolves_scope_and_stores_it_for_multi_agent_chain(self):
-        from src.agent.orchestrator import OrchestratorResult
+        from daily_stock_analysis.agent.orchestrator import OrchestratorResult
 
         orch = self._make_orchestrator()
         captured = {}
@@ -1218,7 +1218,7 @@ class TestOrchestratorExecution(unittest.TestCase):
         self.assertEqual(ctx.meta["stock_scope"].expected_stock_code, "AAPL")
 
     def test_chat_does_not_read_or_write_provider_trace(self):
-        from src.agent.orchestrator import OrchestratorResult
+        from daily_stock_analysis.agent.orchestrator import OrchestratorResult
 
         DatabaseManager.reset_instance()
         Config.reset_instance()
@@ -1266,7 +1266,7 @@ class TestOrchestratorExecution(unittest.TestCase):
             Config.reset_instance()
 
     def test_chat_persists_user_and_assistant_messages(self):
-        from src.agent.orchestrator import OrchestratorResult
+        from daily_stock_analysis.agent.orchestrator import OrchestratorResult
 
         orch = self._make_orchestrator()
         fake_result = OrchestratorResult(success=True, content="assistant reply")
@@ -1281,7 +1281,7 @@ class TestOrchestratorExecution(unittest.TestCase):
         add_message.assert_any_call("session-1", "assistant", "assistant reply")
 
     def test_chat_persists_failure_message(self):
-        from src.agent.orchestrator import OrchestratorResult
+        from daily_stock_analysis.agent.orchestrator import OrchestratorResult
 
         orch = self._make_orchestrator()
         fake_result = OrchestratorResult(success=False, error="boom")
@@ -1389,7 +1389,7 @@ class TestDecisionAgentChatMode(unittest.TestCase):
     """Test DecisionAgent chat-mode output path."""
 
     def test_post_process_stores_free_form_response(self):
-        from src.agent.agents.decision_agent import DecisionAgent
+        from daily_stock_analysis.agent.agents.decision_agent import DecisionAgent
 
         agent = DecisionAgent(tool_registry=MagicMock(), llm_adapter=MagicMock())
         ctx = AgentContext(query="帮我总结一下", stock_code="600519")
@@ -1404,7 +1404,7 @@ class TestDecisionAgentChatMode(unittest.TestCase):
         self.assertEqual(opinion.signal, "buy")
 
     def test_decision_agent_prompt_requires_phase_decision(self):
-        from src.agent.agents.decision_agent import DecisionAgent
+        from daily_stock_analysis.agent.agents.decision_agent import DecisionAgent
 
         agent = DecisionAgent(tool_registry=MagicMock(), llm_adapter=MagicMock())
         prompt = agent.system_prompt(AgentContext(query="分析 600519", stock_code="600519"))
@@ -1419,7 +1419,7 @@ class TestTechnicalAgentSkillPolicy(unittest.TestCase):
     """TechnicalAgent should only receive the legacy trend baseline for implicit/default runs."""
 
     def test_prompt_omits_legacy_default_policy_when_explicit_skill_selected(self):
-        from src.agent.agents.technical_agent import TechnicalAgent
+        from daily_stock_analysis.agent.agents.technical_agent import TechnicalAgent
 
         agent = TechnicalAgent(
             tool_registry=MagicMock(),
@@ -1433,8 +1433,8 @@ class TestTechnicalAgentSkillPolicy(unittest.TestCase):
         self.assertIn("### 技能 1: 缠论", prompt)
 
     def test_prompt_includes_legacy_default_policy_for_implicit_default_run(self):
-        from src.agent.agents.technical_agent import TechnicalAgent
-        from src.agent.skills.defaults import TECHNICAL_SKILL_RULES_EN
+        from daily_stock_analysis.agent.agents.technical_agent import TechnicalAgent
+        from daily_stock_analysis.agent.skills.defaults import TECHNICAL_SKILL_RULES_EN
 
         agent = TechnicalAgent(
             tool_registry=MagicMock(),
@@ -1453,7 +1453,7 @@ class TestBaseAgentMessageAssembly(unittest.TestCase):
 
     @staticmethod
     def _make_agent():
-        from src.agent.agents.base_agent import BaseAgent
+        from daily_stock_analysis.agent.agents.base_agent import BaseAgent
 
         class DummyAgent(BaseAgent):
             agent_name = "dummy"
@@ -1524,7 +1524,7 @@ class TestBaseAgentMessageAssembly(unittest.TestCase):
         self.assertNotIn("analysis_context_pack_summary", pack_message["content"])
 
     def test_run_passes_stock_scope_from_context_meta_to_shared_runner(self):
-        from src.agent.runner import RunLoopResult
+        from daily_stock_analysis.agent.runner import RunLoopResult
 
         agent = self._make_agent()
         ctx = AgentContext(query="hello", stock_code="600519")
@@ -1551,7 +1551,7 @@ class TestEventMonitor(unittest.TestCase):
     """Test EventMonitor serialize/deserialize round-trip."""
 
     def test_round_trip(self):
-        from src.agent.events import EventMonitor, PriceAlert, PriceChangeAlert, VolumeAlert
+        from daily_stock_analysis.agent.events import EventMonitor, PriceAlert, PriceChangeAlert, VolumeAlert
         monitor = EventMonitor()
         monitor.add_alert(PriceAlert(stock_code="600519", direction="above", price=1800.0))
         monitor.add_alert(PriceChangeAlert(stock_code="300750", direction="down", change_pct=3.5))
@@ -1569,7 +1569,7 @@ class TestEventMonitor(unittest.TestCase):
         self.assertEqual(restored.rules[2].stock_code, "000858")
 
     def test_serialization_contract_keeps_supported_rule_keys_stable(self):
-        from src.agent.events import (
+        from daily_stock_analysis.agent.events import (
             AlertStatus,
             EventMonitor,
             PriceAlert,
@@ -1611,7 +1611,7 @@ class TestEventMonitor(unittest.TestCase):
 
     def test_remove_expired(self):
         import time
-        from src.agent.events import EventMonitor, PriceAlert
+        from daily_stock_analysis.agent.events import EventMonitor, PriceAlert
         monitor = EventMonitor()
         alert = PriceAlert(stock_code="600519", direction="above", price=1800.0, ttl_hours=0.0)
         alert.created_at = time.time() - 3600  # 1 hour ago
@@ -1621,7 +1621,7 @@ class TestEventMonitor(unittest.TestCase):
         self.assertEqual(len(monitor.rules), 0)
 
     def test_add_alert_rejects_unsupported_rule_type(self):
-        from src.agent.events import EventMonitor, SentimentAlert
+        from daily_stock_analysis.agent.events import EventMonitor, SentimentAlert
 
         monitor = EventMonitor()
 
@@ -1629,7 +1629,7 @@ class TestEventMonitor(unittest.TestCase):
             monitor.add_alert(SentimentAlert(stock_code="600519"))
 
     def test_from_dict_list_skips_unsupported_placeholder_rule_type(self):
-        from src.agent.events import EventMonitor
+        from daily_stock_analysis.agent.events import EventMonitor
 
         data = [
             {"stock_code": "600519", "alert_type": "sentiment_shift"},
@@ -1646,7 +1646,7 @@ class TestEventMonitor(unittest.TestCase):
         self.assertEqual(monitor.rules[0].stock_code, "000858")
 
     def test_from_dict_list_skips_price_change_without_change_pct(self):
-        from src.agent.events import EventMonitor
+        from daily_stock_analysis.agent.events import EventMonitor
 
         data = [
             {
@@ -1665,7 +1665,7 @@ class TestEventMonitorAsync(unittest.IsolatedAsyncioTestCase):
     """Test async EventMonitor checks offload blocking fetches."""
 
     async def test_check_price_uses_to_thread_and_triggers(self):
-        from src.agent.events import EventMonitor, PriceAlert
+        from daily_stock_analysis.agent.events import EventMonitor, PriceAlert
 
         monitor = EventMonitor()
         rule = PriceAlert(stock_code="600519", direction="above", price=1800.0)
@@ -1679,7 +1679,7 @@ class TestEventMonitorAsync(unittest.IsolatedAsyncioTestCase):
         to_thread.assert_awaited_once()
 
     async def test_check_price_change_uses_to_thread_and_triggers(self):
-        from src.agent.events import EventMonitor, PriceChangeAlert
+        from daily_stock_analysis.agent.events import EventMonitor, PriceChangeAlert
 
         monitor = EventMonitor()
         rule = PriceChangeAlert(stock_code="300750", direction="down", change_pct=3.0)
@@ -1695,7 +1695,7 @@ class TestEventMonitorAsync(unittest.IsolatedAsyncioTestCase):
         to_thread.assert_awaited_once()
 
     async def test_check_price_change_accepts_dict_payload_alias(self):
-        from src.agent.events import EventMonitor, PriceChangeAlert
+        from daily_stock_analysis.agent.events import EventMonitor, PriceChangeAlert
 
         monitor = EventMonitor()
         rule = PriceChangeAlert(stock_code="AAPL", direction="up", change_pct=2.0)
@@ -1707,7 +1707,7 @@ class TestEventMonitorAsync(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(triggered.current_value, 2.35)
 
     async def test_realtime_rules_create_fetcher_manager_per_quote_check(self):
-        from src.agent.events import EventMonitor, PriceAlert, PriceChangeAlert
+        from daily_stock_analysis.agent.events import EventMonitor, PriceAlert, PriceChangeAlert
 
         monitor = EventMonitor()
         monitor.add_alert(PriceAlert(stock_code="600519", direction="above", price=1800.0))
@@ -1731,7 +1731,7 @@ class TestEventMonitorAsync(unittest.IsolatedAsyncioTestCase):
 
     async def test_check_volume_safe_when_fetch_returns_none(self):
         """_check_volume must not crash when get_daily_data returns None."""
-        from src.agent.events import EventMonitor, VolumeAlert
+        from daily_stock_analysis.agent.events import EventMonitor, VolumeAlert
 
         monitor = EventMonitor()
         rule = VolumeAlert(stock_code="600519", multiplier=2.0)
@@ -1743,7 +1743,7 @@ class TestEventMonitorAsync(unittest.IsolatedAsyncioTestCase):
 
     async def test_check_all_async_callback(self):
         """on_trigger callbacks should be properly awaited if coroutine."""
-        from src.agent.events import EventMonitor, PriceAlert
+        from daily_stock_analysis.agent.events import EventMonitor, PriceAlert
 
         monitor = EventMonitor()
         rule = PriceAlert(stock_code="600519", direction="above", price=1800.0)
@@ -1765,7 +1765,7 @@ class TestEventMonitorConfigIntegration(unittest.TestCase):
     """Test config-driven EventMonitor construction."""
 
     def test_build_event_monitor_from_config(self):
-        from src.agent.events import build_event_monitor_from_config
+        from daily_stock_analysis.agent.events import build_event_monitor_from_config
 
         config = SimpleNamespace(
             agent_event_monitor_enabled=True,
@@ -1780,7 +1780,7 @@ class TestEventMonitorConfigIntegration(unittest.TestCase):
         self.assertEqual(monitor.rules[0].stock_code, "600519")
 
     def test_configured_event_monitor_notification_uses_alert_route(self):
-        from src.agent.events import TriggeredAlert, build_event_monitor_from_config
+        from daily_stock_analysis.agent.events import TriggeredAlert, build_event_monitor_from_config
 
         config = SimpleNamespace(
             agent_event_monitor_enabled=True,
@@ -1798,7 +1798,7 @@ class TestEventMonitorConfigIntegration(unittest.TestCase):
         self.assertEqual(notifier.send.call_args.kwargs["route_type"], "alert")
 
     def test_build_event_monitor_from_config_accepts_price_change_percent(self):
-        from src.agent.events import PriceChangeAlert, build_event_monitor_from_config
+        from daily_stock_analysis.agent.events import PriceChangeAlert, build_event_monitor_from_config
 
         config = SimpleNamespace(
             agent_event_monitor_enabled=True,
@@ -1817,7 +1817,7 @@ class TestEventMonitorConfigIntegration(unittest.TestCase):
         self.assertEqual(monitor.rules[0].change_pct, 3.5)
 
     def test_build_event_monitor_returns_none_on_invalid_json(self):
-        from src.agent.events import build_event_monitor_from_config
+        from daily_stock_analysis.agent.events import build_event_monitor_from_config
 
         config = SimpleNamespace(
             agent_event_monitor_enabled=True,
@@ -1828,7 +1828,7 @@ class TestEventMonitorConfigIntegration(unittest.TestCase):
         self.assertIsNone(monitor)
 
     def test_build_event_monitor_skips_invalid_rule_entries(self):
-        from src.agent.events import build_event_monitor_from_config
+        from daily_stock_analysis.agent.events import build_event_monitor_from_config
 
         config = SimpleNamespace(
             agent_event_monitor_enabled=True,
@@ -1846,7 +1846,7 @@ class TestEventMonitorConfigIntegration(unittest.TestCase):
         self.assertEqual(monitor.rules[0].stock_code, "600519")
 
     def test_build_event_monitor_skips_unsupported_rule_types(self):
-        from src.agent.events import build_event_monitor_from_config
+        from daily_stock_analysis.agent.events import build_event_monitor_from_config
 
         config = SimpleNamespace(
             agent_event_monitor_enabled=True,
@@ -1872,25 +1872,25 @@ class TestAgentMemory(unittest.TestCase):
     """Test AgentMemory disabled mode."""
 
     def test_disabled_returns_neutral(self):
-        from src.agent.memory import AgentMemory
+        from daily_stock_analysis.agent.memory import AgentMemory
         mem = AgentMemory(enabled=False)
         cal = mem.get_calibration("technical")
         self.assertFalse(cal.calibrated)
         self.assertAlmostEqual(cal.calibration_factor, 1.0)
 
     def test_disabled_weights_all_equal(self):
-        from src.agent.memory import AgentMemory
+        from daily_stock_analysis.agent.memory import AgentMemory
         mem = AgentMemory(enabled=False)
         weights = mem.compute_strategy_weights(["a", "b", "c"])
         self.assertEqual(weights, {"a": 1.0, "b": 1.0, "c": 1.0})
 
     def test_calibrate_confidence_passthrough_when_disabled(self):
-        from src.agent.memory import AgentMemory
+        from daily_stock_analysis.agent.memory import AgentMemory
         mem = AgentMemory(enabled=False)
         self.assertAlmostEqual(mem.calibrate_confidence("tech", 0.75), 0.75)
 
     def test_get_stock_history_reads_orm_records(self):
-        from src.agent.memory import AgentMemory
+        from daily_stock_analysis.agent.memory import AgentMemory
 
         record = SimpleNamespace(
             created_at=SimpleNamespace(date=lambda: SimpleNamespace(isoformat=lambda: "2026-03-01")),
@@ -1915,7 +1915,7 @@ class TestBaseAgentMemoryIntegration(unittest.TestCase):
 
     @staticmethod
     def _make_agent(memory):
-        from src.agent.agents.base_agent import BaseAgent
+        from daily_stock_analysis.agent.agents.base_agent import BaseAgent
 
         class DummyAgent(BaseAgent):
             agent_name = "technical"
@@ -1997,7 +1997,7 @@ class TestBaseAgentMemoryIntegration(unittest.TestCase):
         memory.calibrate_confidence.assert_not_called()
 
     def test_strategy_memory_calibration_uses_strategy_factor(self):
-        from src.agent.agents.base_agent import BaseAgent
+        from daily_stock_analysis.agent.agents.base_agent import BaseAgent
 
         class DummyStrategyAgent(BaseAgent):
             agent_name = "strategy_chan_theory"
@@ -2065,7 +2065,7 @@ class TestRiskOverride(unittest.TestCase):
         }
 
     def test_risk_override_vetoes_buy_signal(self):
-        from src.agent.orchestrator import AgentOrchestrator
+        from daily_stock_analysis.agent.orchestrator import AgentOrchestrator
 
         orch = AgentOrchestrator(
             tool_registry=MagicMock(),
@@ -2093,7 +2093,7 @@ class TestRiskOverride(unittest.TestCase):
         self.assertEqual(ctx.opinions[0].signal, "hold")
 
     def test_risk_override_normalizes_strong_buy_before_veto(self):
-        from src.agent.orchestrator import AgentOrchestrator
+        from daily_stock_analysis.agent.orchestrator import AgentOrchestrator
 
         orch = AgentOrchestrator(
             tool_registry=MagicMock(),
@@ -2120,7 +2120,7 @@ class TestRiskOverride(unittest.TestCase):
         self.assertEqual(ctx.opinions[0].signal, "hold")
 
     def test_risk_override_respects_disable_flag(self):
-        from src.agent.orchestrator import AgentOrchestrator
+        from daily_stock_analysis.agent.orchestrator import AgentOrchestrator
 
         orch = AgentOrchestrator(
             tool_registry=MagicMock(),
@@ -2152,8 +2152,8 @@ class TestResearchCommandTimeout(unittest.TestCase):
 
     def test_research_timeout_returns_timeout_response(self):
         """Timed-out research results should surface the timeout response text."""
-        from bot.commands.research import ResearchCommand
-        from bot.models import BotMessage
+        from daily_stock_analysis.bot.commands.research import ResearchCommand
+        from daily_stock_analysis.bot.models import BotMessage
 
         cmd = ResearchCommand()
 
@@ -2186,8 +2186,8 @@ class TestResearchCommandTimeout(unittest.TestCase):
         self.assertIn("超时", response.text)
 
     def test_research_recognizes_five_letter_us_ticker(self):
-        from bot.commands.research import ResearchCommand
-        from bot.models import BotMessage
+        from daily_stock_analysis.bot.commands.research import ResearchCommand
+        from daily_stock_analysis.bot.models import BotMessage
 
         cmd = ResearchCommand()
         msg = MagicMock(spec=BotMessage)
@@ -2239,8 +2239,8 @@ class TestResearchAgentFilteredRegistry(unittest.TestCase):
     """Test that ResearchAgent._filtered_registry delegates to BaseAgent's implementation."""
 
     def test_filtered_registry_delegates_to_base(self):
-        from src.agent.research import ResearchAgent
-        from src.agent.tools.registry import ToolRegistry
+        from daily_stock_analysis.agent.research import ResearchAgent
+        from daily_stock_analysis.agent.tools.registry import ToolRegistry
 
         registry = ToolRegistry()
         fake_tool = MagicMock()
@@ -2255,7 +2255,7 @@ class TestResearchAgentFilteredRegistry(unittest.TestCase):
         self.assertIsNotNone(filtered.get("search_stock_news"))
 
     def test_decompose_query_uses_shared_adapter(self):
-        from src.agent.research import ResearchAgent
+        from daily_stock_analysis.agent.research import ResearchAgent
 
         llm_adapter = MagicMock()
         llm_adapter.call_text.return_value = SimpleNamespace(
@@ -2271,7 +2271,7 @@ class TestResearchAgentFilteredRegistry(unittest.TestCase):
         llm_adapter.call_text.assert_called_once()
 
     def test_synthesise_report_uses_shared_adapter(self):
-        from src.agent.research import ResearchAgent
+        from daily_stock_analysis.agent.research import ResearchAgent
 
         llm_adapter = MagicMock()
         llm_adapter.call_text.return_value = SimpleNamespace(
@@ -2291,7 +2291,7 @@ class TestResearchAgentFilteredRegistry(unittest.TestCase):
         llm_adapter.call_text.assert_called_once()
 
     def test_research_marks_synthesis_fallback_as_failure(self):
-        from src.agent.research import ResearchAgent
+        from daily_stock_analysis.agent.research import ResearchAgent
 
         agent = ResearchAgent(tool_registry=MagicMock(), llm_adapter=MagicMock())
         with patch.object(agent, "_decompose_query", return_value={"questions": ["Q1"], "tokens": 3}), \
@@ -2303,7 +2303,7 @@ class TestResearchAgentFilteredRegistry(unittest.TestCase):
         self.assertEqual(result.error, "boom")
 
     def test_research_sub_question_marks_budget_guard_as_timeout(self):
-        from src.agent.research import ResearchAgent
+        from daily_stock_analysis.agent.research import ResearchAgent
 
         agent = ResearchAgent(tool_registry=MagicMock(), llm_adapter=MagicMock())
         with patch("src.agent.research.run_agent_loop", return_value=SimpleNamespace(
@@ -2326,7 +2326,7 @@ class TestResearchAgentFilteredRegistry(unittest.TestCase):
 
     def test_research_returns_timeout_result_when_overall_deadline_is_exceeded(self):
         import time as _time
-        from src.agent.research import ResearchAgent
+        from daily_stock_analysis.agent.research import ResearchAgent
 
         agent = ResearchAgent(tool_registry=MagicMock(), llm_adapter=MagicMock())
 
@@ -2345,7 +2345,7 @@ class TestResearchAgentFilteredRegistry(unittest.TestCase):
 
 class TestAgentResearchEndpoint(unittest.IsolatedAsyncioTestCase):
     async def test_agent_research_returns_timeout_response(self):
-        from api.v1.endpoints.agent import ResearchRequest, agent_research
+        from daily_stock_analysis.api.v1.endpoints.agent import ResearchRequest, agent_research
 
         config = SimpleNamespace(
             litellm_model="gemini/test-model",
@@ -2366,8 +2366,8 @@ class TestAgentResearchEndpoint(unittest.IsolatedAsyncioTestCase):
         ))
 
         with (
-            patch("api.v1.endpoints.agent.get_config", return_value=config),
-            patch("api.v1.endpoints.agent._run_research_in_background", new=research_result),
+            patch("daily_stock_analysis.api.v1.endpoints.agent.get_config", return_value=config),
+            patch("daily_stock_analysis.api.v1.endpoints.agent._run_research_in_background", new=research_result),
             patch("src.agent.factory.get_tool_registry", return_value=MagicMock()),
             patch("src.agent.llm_adapter.LLMToolAdapter", return_value=MagicMock()),
         ):

@@ -4,7 +4,7 @@ import sys
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from src.agent.provider_trace import (  # noqa: E402
+from daily_stock_analysis.agent.provider_trace import (  # noqa: E402
     extract_provider_trace_turns,
     provider_namespace,
     resolved_provider_namespace,

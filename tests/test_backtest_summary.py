@@ -4,7 +4,7 @@
 import unittest
 from dataclasses import dataclass
 
-from src.core.backtest_engine import BacktestEngine
+from daily_stock_analysis.core.backtest_engine import BacktestEngine
 
 
 @dataclass

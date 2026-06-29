@@ -5,8 +5,8 @@ import unittest
 
 import pandas as pd
 
-from src.services.alert_indicators import _calculate_rsi as calculate_alert_rsi
-from src.stock_analyzer import StockTrendAnalyzer
+from daily_stock_analysis.services.alert_indicators import _calculate_rsi as calculate_alert_rsi
+from daily_stock_analysis.stock_analyzer import StockTrendAnalyzer
 
 
 REPORT_RSI_CLOSE = [

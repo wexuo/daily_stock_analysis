@@ -9,9 +9,9 @@ from datetime import datetime, timedelta, timezone
 import pytest
 from sqlalchemy import inspect
 
-from src.config import Config
-from src.repositories.decision_signal_repo import DecisionSignalRepository
-from src.storage import Base, DatabaseManager, DecisionSignalRecord, utc_naive_now
+from daily_stock_analysis.config import Config
+from daily_stock_analysis.repositories.decision_signal_repo import DecisionSignalRepository
+from daily_stock_analysis.storage import Base, DatabaseManager, DecisionSignalRecord, utc_naive_now
 
 
 @pytest.fixture()

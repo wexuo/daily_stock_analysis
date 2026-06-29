@@ -16,8 +16,8 @@ try:
 except ModuleNotFoundError:
     sys.modules["litellm"] = MagicMock()
 
-from src.analyzer import AnalysisResult
-from src.services.report_renderer import render
+from daily_stock_analysis.analyzer import AnalysisResult
+from daily_stock_analysis.services.report_renderer import render
 
 
 def _make_result(

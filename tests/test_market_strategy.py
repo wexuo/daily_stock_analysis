@@ -5,8 +5,8 @@ import unittest
 from types import SimpleNamespace
 from unittest.mock import MagicMock, patch
 
-from src.core.market_strategy import get_market_strategy_blueprint
-from src.market_analyzer import MarketAnalyzer, MarketOverview
+from daily_stock_analysis.core.market_strategy import get_market_strategy_blueprint
+from daily_stock_analysis.market_analyzer import MarketAnalyzer, MarketOverview
 
 
 class TestMarketStrategyBlueprint(unittest.TestCase):

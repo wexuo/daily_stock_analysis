@@ -151,7 +151,7 @@ def test_backend_startup_check_silent_when_bundle_consistent(
 
 
 def test_missing_asset_returns_safe_404_content_types(tmp_path: Path) -> None:
-    from api.app import create_app
+    from daily_stock_analysis.api.app import create_app
 
     static_dir = tmp_path / "static"
     assets_dir = static_dir / "assets"
@@ -180,7 +180,7 @@ def test_missing_asset_returns_safe_404_content_types(tmp_path: Path) -> None:
 
 
 def test_existing_asset_is_served_from_explicit_assets_route(tmp_path: Path) -> None:
-    from api.app import create_app
+    from daily_stock_analysis.api.app import create_app
 
     static_dir = tmp_path / "static"
     assets_dir = static_dir / "assets"
@@ -206,7 +206,7 @@ def test_existing_asset_is_served_from_explicit_assets_route(tmp_path: Path) -> 
 
 
 def test_existing_asset_supports_head_and_conditional_requests(tmp_path: Path) -> None:
-    from api.app import create_app
+    from daily_stock_analysis.api.app import create_app
 
     static_dir = tmp_path / "static"
     assets_dir = static_dir / "assets"
@@ -239,7 +239,7 @@ def test_existing_asset_supports_head_and_conditional_requests(tmp_path: Path) -
 
 
 def test_frontend_index_responses_are_not_cacheable(tmp_path: Path) -> None:
-    from api.app import create_app
+    from daily_stock_analysis.api.app import create_app
 
     static_dir = tmp_path / "static"
     assets_dir = static_dir / "assets"
@@ -292,7 +292,7 @@ def _write_stock_index(path: Path, name: str = "平安银行", size: int = 1) ->
 
 def test_stock_index_route_serves_newer_remote_cache(tmp_path: Path) -> None:
     from api import app as app_module
-    from api.app import create_app
+    from daily_stock_analysis.api.app import create_app
 
     static_dir = tmp_path / "static"
     cache_path = tmp_path / "cache" / "stocks.index.json"
@@ -320,7 +320,7 @@ def test_stock_index_route_serves_newer_remote_cache(tmp_path: Path) -> None:
 
 def test_stock_index_route_prefers_newer_static_index_over_older_remote_cache(tmp_path: Path) -> None:
     from api import app as app_module
-    from api.app import create_app
+    from daily_stock_analysis.api.app import create_app
 
     static_dir = tmp_path / "static"
     cache_path = tmp_path / "cache" / "stocks.index.json"
@@ -345,7 +345,7 @@ def test_stock_index_route_prefers_newer_static_index_over_older_remote_cache(tm
 
 def test_stock_index_route_falls_back_to_static_index(tmp_path: Path) -> None:
     from api import app as app_module
-    from api.app import create_app
+    from daily_stock_analysis.api.app import create_app
 
     static_dir = tmp_path / "static"
     cache_path = tmp_path / "cache" / "missing.json"
@@ -368,8 +368,8 @@ def test_stock_index_route_falls_back_to_static_index(tmp_path: Path) -> None:
 
 def test_stock_index_route_does_not_parse_bundled_candidates_on_hot_path(tmp_path: Path) -> None:
     from api import app as app_module
-    from api.app import create_app
-    from src.data import stock_index_loader
+    from daily_stock_analysis.api.app import create_app
+    from daily_stock_analysis.data import stock_index_loader
 
     static_dir = tmp_path / "static"
     cache_path = tmp_path / "cache" / "missing.json"
@@ -393,7 +393,7 @@ def test_stock_index_route_does_not_parse_bundled_candidates_on_hot_path(tmp_pat
 
 def test_stock_index_route_skips_invalid_remote_cache(tmp_path: Path) -> None:
     from api import app as app_module
-    from api.app import create_app
+    from daily_stock_analysis.api.app import create_app
 
     static_dir = tmp_path / "static"
     cache_path = tmp_path / "cache" / "stocks.index.json"
@@ -419,7 +419,7 @@ def test_stock_index_route_skips_invalid_remote_cache(tmp_path: Path) -> None:
 
 def test_stock_index_route_returns_404_when_all_candidates_missing(tmp_path: Path) -> None:
     from api import app as app_module
-    from api.app import create_app
+    from daily_stock_analysis.api.app import create_app
 
     static_dir = tmp_path / "static"
     cache_path = tmp_path / "cache" / "missing.json"
@@ -438,7 +438,7 @@ def test_stock_index_route_returns_404_when_all_candidates_missing(tmp_path: Pat
 
 def test_app_startup_schedules_stock_index_background_refresh(tmp_path: Path) -> None:
     from api import app as app_module
-    from api.app import create_app
+    from daily_stock_analysis.api.app import create_app
 
     static_dir = tmp_path / "static"
 
@@ -463,7 +463,7 @@ def test_asset_traversal_attempts_are_rejected(
     tmp_path: Path,
     request_path: str,
 ) -> None:
-    from api.app import create_app
+    from daily_stock_analysis.api.app import create_app
 
     static_dir = tmp_path / "static"
     assets_dir = static_dir / "assets"

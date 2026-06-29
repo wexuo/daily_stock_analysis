@@ -16,8 +16,8 @@ try:
 except ModuleNotFoundError:
     sys.modules["litellm"] = MagicMock()
 
-from data_provider.realtime_types import ChipDistribution
-from src.analyzer import (
+from daily_stock_analysis.data_provider.realtime_types import ChipDistribution
+from daily_stock_analysis.analyzer import (
     AnalysisResult,
     fill_chip_structure_if_needed,
     normalize_chip_structure_availability,

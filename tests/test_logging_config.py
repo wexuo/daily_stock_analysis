@@ -5,7 +5,7 @@ import logging
 
 import pytest
 
-from src.logging_config import LITELLM_LOGGERS, setup_logging
+from daily_stock_analysis.logging_config import LITELLM_LOGGERS, setup_logging
 
 
 @pytest.fixture(autouse=True)

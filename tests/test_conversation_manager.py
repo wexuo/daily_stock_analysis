@@ -5,7 +5,7 @@ import threading
 import unittest
 from unittest.mock import patch
 
-from src.agent.conversation import ConversationManager
+from daily_stock_analysis.agent.conversation import ConversationManager
 
 
 class ConversationManagerThreadSafetyTestCase(unittest.TestCase):

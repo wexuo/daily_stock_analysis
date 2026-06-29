@@ -14,7 +14,7 @@ import io
 import pytest
 from unittest.mock import patch
 
-from src.services.import_parser import (
+from daily_stock_analysis.services.import_parser import (
     parse_import_from_bytes,
     parse_import_from_text,
     MAX_FILE_BYTES,

@@ -3,12 +3,12 @@
 import json
 from pathlib import Path
 
-from api.app import create_app
-from api.v1.router import router as api_v1_router
-from api.v1.schemas.analysis import AnalyzeRequest, MarketReviewRequest
-from api.v1.schemas.common import RootResponse
-from api.v1.schemas.history import HistoryItem
-from api.v1.schemas.stocks import StockQuote
+from daily_stock_analysis.api.app import create_app
+from daily_stock_analysis.api.v1.router import router as api_v1_router
+from daily_stock_analysis.api.v1.schemas.analysis import AnalyzeRequest, MarketReviewRequest
+from daily_stock_analysis.api.v1.schemas.common import RootResponse
+from daily_stock_analysis.api.v1.schemas.history import HistoryItem
+from daily_stock_analysis.api.v1.schemas.stocks import StockQuote
 
 
 DECISION_SIGNAL_PATHS = (

@@ -11,7 +11,7 @@ Covers:
 import pytest
 from unittest.mock import patch
 
-from src.config import Config, ConfigIssue
+from daily_stock_analysis.config import Config, ConfigIssue
 
 
 # ---------------------------------------------------------------------------

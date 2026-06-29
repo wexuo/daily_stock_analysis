@@ -5,7 +5,7 @@ import logging
 from types import SimpleNamespace
 from unittest.mock import MagicMock, patch
 
-from src.core.pipeline import StockAnalysisPipeline
+from daily_stock_analysis.core.pipeline import StockAnalysisPipeline
 
 
 def _make_config() -> SimpleNamespace:

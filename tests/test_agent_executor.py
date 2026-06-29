@@ -28,23 +28,23 @@ try:
 except ModuleNotFoundError:
     sys.modules["litellm"] = MagicMock()
 
-from src.agent.executor import (
+from daily_stock_analysis.agent.executor import (
     AGENT_SYSTEM_PROMPT,
     LEGACY_DEFAULT_AGENT_SYSTEM_PROMPT,
     AgentExecutor,
     AgentResult,
 )
-from src.agent.llm_adapter import LLMResponse, ToolCall
-from src.agent.runner import parse_dashboard_json, run_agent_loop, serialize_tool_result
-from src.agent.stock_scope import StockScope, resolve_stock_scope
-from src.agent.tools.registry import ToolRegistry, ToolDefinition, ToolParameter
-from src.analysis_context_pack_prompt import format_analysis_context_pack_prompt_section
-from src.config import Config
-from src.services.analysis_context_builder import (
+from daily_stock_analysis.agent.llm_adapter import LLMResponse, ToolCall
+from daily_stock_analysis.agent.runner import parse_dashboard_json, run_agent_loop, serialize_tool_result
+from daily_stock_analysis.agent.stock_scope import StockScope, resolve_stock_scope
+from daily_stock_analysis.agent.tools.registry import ToolRegistry, ToolDefinition, ToolParameter
+from daily_stock_analysis.analysis_context_pack_prompt import format_analysis_context_pack_prompt_section
+from daily_stock_analysis.config import Config
+from daily_stock_analysis.services.analysis_context_builder import (
     AnalysisContextBuilder,
     PipelineAnalysisArtifacts,
 )
-from src.storage import DatabaseManager
+from daily_stock_analysis.storage import DatabaseManager
 
 
 # ============================================================

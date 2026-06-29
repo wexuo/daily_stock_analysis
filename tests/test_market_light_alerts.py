@@ -7,7 +7,7 @@ import json
 import unittest
 from unittest.mock import patch
 
-from src.services.market_light_alerts import (
+from daily_stock_analysis.services.market_light_alerts import (
     MarketLightAlert,
     evaluate_market_light_alert,
     normalize_market_alert_parameters,

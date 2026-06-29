@@ -15,13 +15,13 @@ from tests.litellm_stub import ensure_litellm_stub
 
 ensure_litellm_stub()
 
-from api.v1.endpoints.analysis import get_task_run_flow
-from api.v1.endpoints.history import get_history_run_flow
-from src.services.run_flow import (
+from daily_stock_analysis.api.v1.endpoints.analysis import get_task_run_flow
+from daily_stock_analysis.api.v1.endpoints.history import get_history_run_flow
+from daily_stock_analysis.services.run_flow import (
     build_history_run_flow_snapshot,
     build_task_run_flow_snapshot,
 )
-from src.services.run_diagnostics import (
+from daily_stock_analysis.services.run_diagnostics import (
     activate_run_diagnostic_context,
     current_diagnostic_snapshot,
     record_llm_run,
@@ -31,7 +31,7 @@ from src.services.run_diagnostics import (
     record_provider_run_started,
     reset_run_diagnostic_context,
 )
-from src.services.task_queue import AnalysisTaskQueue, TaskInfo, TaskStatus
+from daily_stock_analysis.services.task_queue import AnalysisTaskQueue, TaskInfo, TaskStatus
 
 
 def _overview(*, blocks: list[dict]) -> dict:
@@ -1072,7 +1072,7 @@ class RunFlowTestCase(unittest.TestCase):
         self.assertEqual(notification.attempts, 0)
 
     def test_market_review_persist_records_diagnostics_with_saved_history_id(self) -> None:
-        from src.core.market_review import _persist_market_review_history
+        from daily_stock_analysis.core.market_review import _persist_market_review_history
 
         fake_db = _FakeMarketReviewDb(save_result=42)
         config = SimpleNamespace(report_language="zh")
@@ -1110,7 +1110,7 @@ class RunFlowTestCase(unittest.TestCase):
         self.assertEqual(history_ctx.exception.status_code, 404)
 
         queue = SimpleNamespace(get_task=lambda task_id: None)
-        with patch("api.v1.endpoints.analysis.get_task_queue", return_value=queue), patch(
+        with patch("daily_stock_analysis.api.v1.endpoints.analysis.get_task_queue", return_value=queue), patch(
             "api.v1.endpoints.analysis._load_history_run_flow_by_query_id",
             return_value=None,
         ):
@@ -1129,7 +1129,7 @@ class RunFlowTestCase(unittest.TestCase):
         )
         queue = SimpleNamespace(get_task=lambda task_id: task)
 
-        with patch("api.v1.endpoints.analysis.get_task_queue", return_value=queue), patch(
+        with patch("daily_stock_analysis.api.v1.endpoints.analysis.get_task_queue", return_value=queue), patch(
             "api.v1.endpoints.analysis._load_history_run_flow_by_query_id",
             return_value=None,
         ) as load_history:
@@ -1154,7 +1154,7 @@ class RunFlowTestCase(unittest.TestCase):
         )
         queue = SimpleNamespace(get_task=lambda task_id: task)
 
-        with patch("api.v1.endpoints.analysis.get_task_queue", return_value=queue), patch(
+        with patch("daily_stock_analysis.api.v1.endpoints.analysis.get_task_queue", return_value=queue), patch(
             "api.v1.endpoints.analysis._load_history_run_flow_by_query_id",
             return_value=None,
         ) as load_history:

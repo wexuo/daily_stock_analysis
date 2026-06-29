@@ -16,8 +16,8 @@ from tests.litellm_stub import ensure_litellm_stub
 
 ensure_litellm_stub()
 
-from src.analyzer import AnalysisResult
-from src.services.task_service import TaskService
+from daily_stock_analysis.analyzer import AnalysisResult
+from daily_stock_analysis.services.task_service import TaskService
 
 
 def _make_failed_result(code: str) -> AnalysisResult:

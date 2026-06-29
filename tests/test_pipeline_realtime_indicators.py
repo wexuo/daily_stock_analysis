@@ -18,9 +18,9 @@ import pandas as pd
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from data_provider.realtime_types import UnifiedRealtimeQuote, RealtimeSource
-from src.stock_analyzer import StockTrendAnalyzer, TrendAnalysisResult, TrendStatus
-from src.core.pipeline import StockAnalysisPipeline
+from daily_stock_analysis.data_provider.realtime_types import UnifiedRealtimeQuote, RealtimeSource
+from daily_stock_analysis.stock_analyzer import StockTrendAnalyzer, TrendAnalysisResult, TrendStatus
+from daily_stock_analysis.core.pipeline import StockAnalysisPipeline
 
 
 def _make_realtime_quote(
@@ -84,7 +84,7 @@ class TestAugmentHistoricalWithRealtime(unittest.TestCase):
         )
         os.makedirs(os.path.dirname(self._db_path), exist_ok=True)
         with patch.dict(os.environ, {"DATABASE_PATH": self._db_path}):
-            from src.config import Config
+            from daily_stock_analysis.config import Config
             Config._instance = None
             self.config = Config._load_from_env()
         self.pipeline = StockAnalysisPipeline(config=self.config)
@@ -183,7 +183,7 @@ class TestEnhanceContextRealtimeOverride(unittest.TestCase):
         )
         os.makedirs(os.path.dirname(self._db_path), exist_ok=True)
         with patch.dict(os.environ, {"DATABASE_PATH": self._db_path}):
-            from src.config import Config
+            from daily_stock_analysis.config import Config
             Config._instance = None
             self.config = Config._load_from_env()
         self.pipeline = StockAnalysisPipeline(config=self.config)

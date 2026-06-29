@@ -6,7 +6,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from src.data import stock_index_loader
+from daily_stock_analysis.data import stock_index_loader
 
 
 def _write_stock_index(path: Path, name: str, size: int = 1) -> None:

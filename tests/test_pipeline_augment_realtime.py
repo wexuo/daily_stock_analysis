@@ -8,7 +8,7 @@ from unittest.mock import patch
 
 import pandas as pd
 
-from src.core.pipeline import StockAnalysisPipeline
+from daily_stock_analysis.core.pipeline import StockAnalysisPipeline
 
 
 def _make_pipeline():

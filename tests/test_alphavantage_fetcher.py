@@ -23,7 +23,7 @@ class TestAlphaVantageFetcherNormalize(unittest.TestCase):
     """Test _normalize_data with raw AlphaVantage TIME_SERIES_DAILY response."""
 
     def setUp(self):
-        from data_provider.alphavantage_fetcher import AlphaVantageFetcher
+        from daily_stock_analysis.data_provider.alphavantage_fetcher import AlphaVantageFetcher
         self.fetcher = AlphaVantageFetcher()
 
     def test_normalize_daily_data(self):
@@ -64,7 +64,7 @@ class TestAlphaVantageFetcherFetchRaw(unittest.TestCase):
     """Test _fetch_raw_data with mocked HTTP."""
 
     def setUp(self):
-        from data_provider.alphavantage_fetcher import AlphaVantageFetcher
+        from daily_stock_analysis.data_provider.alphavantage_fetcher import AlphaVantageFetcher
         self.fetcher = AlphaVantageFetcher()
         self.fetcher._api_key = "test_key"
 
@@ -90,7 +90,7 @@ class TestAlphaVantageFetcherFetchRaw(unittest.TestCase):
 
     @patch('data_provider.alphavantage_fetcher.requests.get')
     def test_fetch_raw_rate_limit(self, mock_get):
-        from data_provider.base import DataFetchError
+        from daily_stock_analysis.data_provider.base import DataFetchError
         mock_get.return_value = _make_mock_response({
             'Note': 'Thank you for using Alpha Vantage! Our standard API call frequency is 25 calls per day.',
         })
@@ -99,7 +99,7 @@ class TestAlphaVantageFetcherFetchRaw(unittest.TestCase):
 
     @patch('data_provider.alphavantage_fetcher.requests.get')
     def test_fetch_raw_error_response(self, mock_get):
-        from data_provider.base import DataFetchError
+        from daily_stock_analysis.data_provider.base import DataFetchError
         mock_get.return_value = _make_mock_response({
             'Error Message': 'Invalid API call.',
         })
@@ -108,7 +108,7 @@ class TestAlphaVantageFetcherFetchRaw(unittest.TestCase):
 
     @patch('data_provider.alphavantage_fetcher.requests.get')
     def test_fetch_raw_http_error(self, mock_get):
-        from data_provider.base import DataFetchError
+        from daily_stock_analysis.data_provider.base import DataFetchError
         mock_get.side_effect = Exception("connection timeout")
         with self.assertRaises(DataFetchError):
             self.fetcher._fetch_raw_data('AAPL', '2024-06-10', '2024-06-11')
@@ -118,7 +118,7 @@ class TestAlphaVantageFetcherRealtimeQuote(unittest.TestCase):
     """Test get_realtime_quote with mocked HTTP."""
 
     def setUp(self):
-        from data_provider.alphavantage_fetcher import AlphaVantageFetcher
+        from daily_stock_analysis.data_provider.alphavantage_fetcher import AlphaVantageFetcher
         self.fetcher = AlphaVantageFetcher()
         self.fetcher._api_key = "test_key"
 
@@ -151,7 +151,7 @@ class TestAlphaVantageFetcherStockName(unittest.TestCase):
     """Test get_stock_name with mocked HTTP."""
 
     def setUp(self):
-        from data_provider.alphavantage_fetcher import AlphaVantageFetcher
+        from daily_stock_analysis.data_provider.alphavantage_fetcher import AlphaVantageFetcher
         self.fetcher = AlphaVantageFetcher()
         self.fetcher._api_key = "test_key"
 
@@ -178,7 +178,7 @@ class TestAlphaVantageFetcherInit(unittest.TestCase):
     @patch('src.config.get_config')
     def test_init_with_key(self, mock_config):
         mock_config.return_value = MagicMock(alphavantage_api_key='AVTEST123')
-        from data_provider.alphavantage_fetcher import AlphaVantageFetcher
+        from daily_stock_analysis.data_provider.alphavantage_fetcher import AlphaVantageFetcher
         f = AlphaVantageFetcher()
         self.assertEqual(f._api_key, 'AVTEST123')
 
@@ -187,7 +187,7 @@ class TestAlphaVantageFetcherInit(unittest.TestCase):
     def test_init_without_key(self, mock_config):
         os.environ.pop('ALPHAVANTAGE_API_KEY', None)
         mock_config.return_value = MagicMock(alphavantage_api_key=None)
-        from data_provider.alphavantage_fetcher import AlphaVantageFetcher
+        from daily_stock_analysis.data_provider.alphavantage_fetcher import AlphaVantageFetcher
         f = AlphaVantageFetcher()
         self.assertIsNone(f._api_key)
 
@@ -196,7 +196,7 @@ class TestAlphaVantageFetcherNewestFirst(unittest.TestCase):
     """Verify pct_chg is correct when API returns newest-first data."""
 
     def setUp(self):
-        from data_provider.alphavantage_fetcher import AlphaVantageFetcher
+        from daily_stock_analysis.data_provider.alphavantage_fetcher import AlphaVantageFetcher
         self.fetcher = AlphaVantageFetcher()
 
     def test_pct_chg_correct_newest_first(self):

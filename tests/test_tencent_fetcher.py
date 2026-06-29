@@ -7,7 +7,7 @@ from unittest.mock import patch
 
 import pandas as pd
 
-from data_provider.tencent_fetcher import TencentFetcher, _to_tencent_symbol
+from daily_stock_analysis.data_provider.tencent_fetcher import TencentFetcher, _to_tencent_symbol
 
 
 def test_tencent_symbol_conversion_supports_a_share_markets() -> None:

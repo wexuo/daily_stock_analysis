@@ -8,7 +8,7 @@ from unittest.mock import patch
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from data_provider.tickflow_fetcher import (
+from daily_stock_analysis.data_provider.tickflow_fetcher import (
     TickFlowFetcher,
     _UNIVERSE_PERMISSION_NEGATIVE_CACHE_TTL_SECONDS,
 )

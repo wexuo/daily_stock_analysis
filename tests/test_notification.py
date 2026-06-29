@@ -29,11 +29,11 @@ for optional_module in ("litellm", "json_repair"):
     except ModuleNotFoundError:
         sys.modules[optional_module] = mock.MagicMock()
 
-from src.config import Config
-from src.notification import NotificationService, NotificationChannel
-from src.notification_noise import reset_notification_noise_state
-from src.analyzer import AnalysisResult
-from bot.models import BotMessage, ChatType
+from daily_stock_analysis.config import Config
+from daily_stock_analysis.notification import NotificationService, NotificationChannel
+from daily_stock_analysis.notification_noise import reset_notification_noise_state
+from daily_stock_analysis.analyzer import AnalysisResult
+from daily_stock_analysis.bot.models import BotMessage, ChatType
 import requests
 
 

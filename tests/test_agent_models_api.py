@@ -7,9 +7,9 @@ import unittest
 from types import SimpleNamespace
 from unittest.mock import MagicMock, patch
 
-from api.v1.endpoints import agent
-from src.config import Config
-from src.services.agent_model_service import list_agent_model_deployments
+from daily_stock_analysis.api.v1.endpoints import agent
+from daily_stock_analysis.config import Config
+from daily_stock_analysis.services.agent_model_service import list_agent_model_deployments
 
 
 def _build_config(**overrides):
@@ -227,7 +227,7 @@ class AgentModelsEndpointTestCase(unittest.TestCase):
             ],
         )
 
-        with patch("api.v1.endpoints.agent.get_config", return_value=config):
+        with patch("daily_stock_analysis.api.v1.endpoints.agent.get_config", return_value=config):
             payload = asyncio.run(agent.get_agent_models()).model_dump()
 
         self.assertEqual(len(payload["models"]), 2)
@@ -262,7 +262,7 @@ class AgentSkillsEndpointTestCase(unittest.TestCase):
             ]
         )
 
-        with patch("api.v1.endpoints.agent.get_config", return_value=config), patch(
+        with patch("daily_stock_analysis.api.v1.endpoints.agent.get_config", return_value=config), patch(
             "src.agent.factory.get_skill_manager",
             return_value=skill_manager,
         ):
@@ -286,7 +286,7 @@ class AgentSkillsEndpointTestCase(unittest.TestCase):
             ]
         )
 
-        with patch("api.v1.endpoints.agent.get_config", return_value=config), patch(
+        with patch("daily_stock_analysis.api.v1.endpoints.agent.get_config", return_value=config), patch(
             "src.agent.factory.get_skill_manager",
             return_value=skill_manager,
         ):
@@ -321,7 +321,7 @@ class AgentSkillsEndpointTestCase(unittest.TestCase):
                 future.set_result(func())
                 return future
 
-        with patch("api.v1.endpoints.agent.get_config", return_value=config), patch(
+        with patch("daily_stock_analysis.api.v1.endpoints.agent.get_config", return_value=config), patch(
             "api.v1.endpoints.agent._build_executor",
             return_value=executor,
         ) as mock_build_executor, patch(

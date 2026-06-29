@@ -20,7 +20,7 @@ except ImportError:
     if "json_repair" not in sys.modules:
         sys.modules["json_repair"] = MagicMock()
 
-from data_provider.akshare_fetcher import AkshareFetcher
+from daily_stock_analysis.data_provider.akshare_fetcher import AkshareFetcher
 
 
 class _DummyCircuitBreaker:

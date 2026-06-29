@@ -22,10 +22,10 @@ except ModuleNotFoundError:
     sys.modules["litellm"] = MagicMock()
 
 import src.auth as auth
-from api.app import create_app
-from src.config import Config
-from src.services.portfolio_service import PortfolioBusyError
-from src.storage import DatabaseManager
+from daily_stock_analysis.api.app import create_app
+from daily_stock_analysis.config import Config
+from daily_stock_analysis.services.portfolio_service import PortfolioBusyError
+from daily_stock_analysis.storage import DatabaseManager
 
 
 def _reset_auth_globals() -> None:
@@ -352,7 +352,7 @@ class PortfolioApiTestCase(unittest.TestCase):
         with patch(
             "src.services.portfolio_service.PortfolioService._fetch_realtime_position_price",
             return_value=(None, None),
-        ), patch("api.v1.endpoints.portfolio.get_task_queue", return_value=queue):
+        ), patch("daily_stock_analysis.api.v1.endpoints.portfolio.get_task_queue", return_value=queue):
             resp = self.client.post(
                 "/api/v1/portfolio/positions/600519/analysis",
                 json={"account_id": account_id, "analysis_phase": "intraday", "force": True},
@@ -388,7 +388,7 @@ class PortfolioApiTestCase(unittest.TestCase):
         with patch(
             "src.services.portfolio_service.PortfolioService._fetch_realtime_position_price",
             return_value=(None, None),
-        ), patch("api.v1.endpoints.portfolio.get_task_queue", return_value=queue):
+        ), patch("daily_stock_analysis.api.v1.endpoints.portfolio.get_task_queue", return_value=queue):
             resp = self.client.post(
                 "/api/v1/portfolio/positions/600519.SH/analysis",
                 json={"account_id": account_id},
@@ -418,7 +418,7 @@ class PortfolioApiTestCase(unittest.TestCase):
         with patch(
             "src.services.portfolio_service.PortfolioService._fetch_realtime_position_price",
             return_value=(None, None),
-        ), patch("api.v1.endpoints.portfolio.get_task_queue", return_value=queue):
+        ), patch("daily_stock_analysis.api.v1.endpoints.portfolio.get_task_queue", return_value=queue):
             resp = self.client.post(
                 "/api/v1/portfolio/positions/1810.HK/analysis",
                 json={"account_id": account_id},
@@ -455,7 +455,7 @@ class PortfolioApiTestCase(unittest.TestCase):
         with patch(
             "src.services.portfolio_service.PortfolioService._fetch_realtime_position_price",
             return_value=(None, None),
-        ), patch("api.v1.endpoints.portfolio.get_task_queue", return_value=queue):
+        ), patch("daily_stock_analysis.api.v1.endpoints.portfolio.get_task_queue", return_value=queue):
             resp = self.client.post(
                 "/api/v1/portfolio/positions/600519/analysis",
                 json={"account_id": account_id, "force": True},

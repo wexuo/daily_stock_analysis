@@ -24,10 +24,10 @@ try:
 except ModuleNotFoundError:
     sys.modules["litellm"] = MagicMock()
 
-from api.v1.endpoints import alphasift as alphasift_endpoint
-from src.config import Config, DEFAULT_ALPHASIFT_INSTALL_SPEC
-from src.services import alphasift_service
-from src.services.task_queue import TaskInfo, TaskStatus as QueueTaskStatus
+from daily_stock_analysis.api.v1.endpoints import alphasift as alphasift_endpoint
+from daily_stock_analysis.config import Config, DEFAULT_ALPHASIFT_INSTALL_SPEC
+from daily_stock_analysis.services import alphasift_service
+from daily_stock_analysis.services.task_queue import TaskInfo, TaskStatus as QueueTaskStatus
 
 DEFAULT_ALPHASIFT_TEST_SPEC = DEFAULT_ALPHASIFT_INSTALL_SPEC
 
@@ -1134,7 +1134,7 @@ class AlphaSiftOpportunitiesApiTestCase(unittest.TestCase):
             "stock_count": 0,
         }
 
-        with patch("api.v1.endpoints.alphasift._service", return_value=service):
+        with patch("daily_stock_analysis.api.v1.endpoints.alphasift._service", return_value=service):
             response = TestClient(app).get("/api/v1/alphasift/hotspots/DRG%2FDIP?provider=akshare")
 
         self.assertEqual(response.status_code, 200)
@@ -1493,8 +1493,8 @@ class AlphaSiftOpportunitiesApiTestCase(unittest.TestCase):
         )
 
         with (
-            patch("api.v1.endpoints.alphasift.get_task_queue", return_value=fake_queue),
-            patch("api.v1.endpoints.alphasift.uuid.uuid4", return_value=SimpleNamespace(hex="screen-task-1")),
+            patch("daily_stock_analysis.api.v1.endpoints.alphasift.get_task_queue", return_value=fake_queue),
+            patch("daily_stock_analysis.api.v1.endpoints.alphasift.uuid.uuid4", return_value=SimpleNamespace(hex="screen-task-1")),
             patch.object(
                 alphasift_endpoint.AlphaSiftService,
                 "screen",
@@ -1535,7 +1535,7 @@ class AlphaSiftOpportunitiesApiTestCase(unittest.TestCase):
         fake_queue = MagicMock()
         fake_queue.get_task.return_value = task
 
-        with patch("api.v1.endpoints.alphasift.get_task_queue", return_value=fake_queue):
+        with patch("daily_stock_analysis.api.v1.endpoints.alphasift.get_task_queue", return_value=fake_queue):
             payload = alphasift_endpoint.alphasift_screen_task_status("screen-task-1")
 
         self.assertEqual(payload.status, "completed")
@@ -1551,7 +1551,7 @@ class AlphaSiftOpportunitiesApiTestCase(unittest.TestCase):
         fake_queue = MagicMock()
         fake_queue.get_task.return_value = task
 
-        with patch("api.v1.endpoints.alphasift.get_task_queue", return_value=fake_queue):
+        with patch("daily_stock_analysis.api.v1.endpoints.alphasift.get_task_queue", return_value=fake_queue):
             with self.assertRaises(HTTPException) as caught:
                 alphasift_endpoint.alphasift_screen_task_status("analysis-task-1")
 

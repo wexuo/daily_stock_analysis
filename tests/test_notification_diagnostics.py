@@ -3,9 +3,9 @@
 
 import unittest
 
-from src.config import Config
-from src.notification import NotificationChannel
-from src.services.notification_diagnostics import (
+from daily_stock_analysis.config import Config
+from daily_stock_analysis.notification import NotificationChannel
+from daily_stock_analysis.services.notification_diagnostics import (
     CHANNEL_SPECS,
     KEY_SPECS,
     NotificationDiagnosticResult,

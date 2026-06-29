@@ -13,7 +13,7 @@ Covers:
 import pytest
 from unittest.mock import patch
 
-from src.services.name_to_code_resolver import (
+from daily_stock_analysis.services.name_to_code_resolver import (
     resolve_name_to_code,
     _is_code_like,
     _normalize_code,

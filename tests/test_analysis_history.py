@@ -25,19 +25,19 @@ except ModuleNotFoundError:
 
 try:
     from fastapi.testclient import TestClient
-    from api.app import create_app
-    from api.v1.endpoints.history import get_history_detail, get_stock_bar
+    from daily_stock_analysis.api.app import create_app
+    from daily_stock_analysis.api.v1.endpoints.history import get_history_detail, get_stock_bar
 except ModuleNotFoundError:
     TestClient = None
     create_app = None
     get_history_detail = None
     get_stock_bar = None
 
-from src.config import Config
-from src.storage import DatabaseManager, AnalysisHistory, BacktestResult, DecisionSignalRecord
-from src.analyzer import AnalysisResult
-from src.daily_market_context_guardrail import apply_daily_market_context_guardrail
-from src.services.history_service import HistoryService
+from daily_stock_analysis.config import Config
+from daily_stock_analysis.storage import DatabaseManager, AnalysisHistory, BacktestResult, DecisionSignalRecord
+from daily_stock_analysis.analyzer import AnalysisResult
+from daily_stock_analysis.daily_market_context_guardrail import apply_daily_market_context_guardrail
+from daily_stock_analysis.services.history_service import HistoryService
 import src.auth as auth
 
 
@@ -624,7 +624,7 @@ class AnalysisHistoryTestCase(unittest.TestCase):
             },
         }
 
-        with patch("api.v1.endpoints.history.HistoryService", return_value=service):
+        with patch("daily_stock_analysis.api.v1.endpoints.history.HistoryService", return_value=service):
             response = get_history_detail("query_action_conflict", db_manager=self.db)
 
         self.assertEqual(response.summary.operation_advice, "持有观察")
@@ -831,7 +831,7 @@ class AnalysisHistoryTestCase(unittest.TestCase):
         self.assertEqual(report.meta.current_price, 200.0)
         self.assertEqual(report.meta.change_pct, 1.23)
 
-    @patch("src.auth.is_auth_enabled", return_value=False)
+    @patch("daily_stock_analysis.src.auth.is_auth_enabled", return_value=False)
     def test_history_detail_ignores_non_dict_realtime_quote_raw(self, mock_auth) -> None:
         """GET /api/v1/history/{id} should tolerate truthy non-dict realtime_quote_raw."""
         if TestClient is None or create_app is None:
@@ -1747,7 +1747,7 @@ class AnalysisHistoryTestCase(unittest.TestCase):
                 1,
             )
 
-    @patch("src.auth.is_auth_enabled", return_value=False)
+    @patch("daily_stock_analysis.src.auth.is_auth_enabled", return_value=False)
     def test_delete_history_api_deletes_selected_records(self, mock_auth) -> None:
         """DELETE /api/v1/history should remove only the requested records."""
         if TestClient is None or create_app is None:
@@ -1781,7 +1781,7 @@ class HistoryItemSchemaNegativeSentimentTest(unittest.TestCase):
     def setUpClass(cls) -> None:
         """Import schema classes once for all tests, skipping gracefully when deps are missing."""
         try:
-            from api.v1.schemas.history import HistoryItem, ReportSummary  # type: ignore
+            from daily_stock_analysis.api.v1.schemas.history import HistoryItem, ReportSummary  # type: ignore
         except ModuleNotFoundError:
             cls.HistoryItem = None
             cls.ReportSummary = None

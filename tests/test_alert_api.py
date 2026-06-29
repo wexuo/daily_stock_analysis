@@ -23,12 +23,12 @@ except ModuleNotFoundError:
     sys.modules["litellm"] = MagicMock()
 
 import src.auth as auth
-from api.app import create_app
-from src.config import Config
-from src.repositories.alert_repo import AlertRepository
-from src.services.alert_service import AlertService
-from src.services.portfolio_service import PortfolioService
-from src.storage import AlertCooldownRecord, AlertNotificationRecord, AlertTriggerRecord, Base, DatabaseManager
+from daily_stock_analysis.api.app import create_app
+from daily_stock_analysis.config import Config
+from daily_stock_analysis.repositories.alert_repo import AlertRepository
+from daily_stock_analysis.services.alert_service import AlertService
+from daily_stock_analysis.services.portfolio_service import PortfolioService
+from daily_stock_analysis.storage import AlertCooldownRecord, AlertNotificationRecord, AlertTriggerRecord, Base, DatabaseManager
 
 
 def _reset_auth_globals() -> None:

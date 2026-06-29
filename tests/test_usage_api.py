@@ -8,8 +8,8 @@ from pathlib import Path
 
 from fastapi.testclient import TestClient
 
-from api.app import create_app
-from api.deps import get_database_manager
+from daily_stock_analysis.api.app import create_app
+from daily_stock_analysis.api.deps import get_database_manager
 
 
 class FakeUsageDbManager:

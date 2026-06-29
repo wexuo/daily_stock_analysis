@@ -2,8 +2,8 @@
 import unittest
 from unittest.mock import patch, MagicMock, PropertyMock
 
-from data_provider.yfinance_fetcher import YfinanceFetcher
-from data_provider.realtime_types import RealtimeSource
+from daily_stock_analysis.data_provider.yfinance_fetcher import YfinanceFetcher
+from daily_stock_analysis.data_provider.realtime_types import RealtimeSource
 
 try:
     import yfinance  # noqa: F401

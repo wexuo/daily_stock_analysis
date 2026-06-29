@@ -7,7 +7,7 @@ import json
 import unittest
 from datetime import date
 
-from src.services.portfolio_alerts import (
+from daily_stock_analysis.services.portfolio_alerts import (
     PortfolioRiskAlert,
     evaluate_portfolio_risk_alert,
     expand_symbol_targets,

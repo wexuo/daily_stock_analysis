@@ -19,9 +19,9 @@ from unittest.mock import patch
 
 from sqlalchemy.exc import OperationalError
 
-from src.config import Config
-from src.storage import DatabaseManager, NewsIntel
-from src.search_service import SearchResponse, SearchResult
+from daily_stock_analysis.config import Config
+from daily_stock_analysis.storage import DatabaseManager, NewsIntel
+from daily_stock_analysis.search_service import SearchResponse, SearchResult
 
 
 class NewsIntelStorageTestCase(unittest.TestCase):

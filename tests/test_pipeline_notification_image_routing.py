@@ -15,14 +15,14 @@ from tests.litellm_stub import ensure_litellm_stub
 
 ensure_litellm_stub()
 
-from src.core.pipeline import StockAnalysisPipeline, NotificationChannel
-from src.services.run_diagnostics import (
+from daily_stock_analysis.core.pipeline import StockAnalysisPipeline, NotificationChannel
+from daily_stock_analysis.services.run_diagnostics import (
     activate_run_diagnostic_context,
     build_run_diagnostic_summary,
     current_diagnostic_snapshot,
     reset_run_diagnostic_context,
 )
-from src.enums import ReportType
+from daily_stock_analysis.enums import ReportType
 
 
 class _FakeNotifier:

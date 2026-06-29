@@ -9,7 +9,7 @@ import re
 import unittest
 from pathlib import Path
 
-from src.core.config_registry import (
+from daily_stock_analysis.core.config_registry import (
     WEB_SETTINGS_HIDDEN_FROM_UI,
     build_schema_response,
     get_field_definition,

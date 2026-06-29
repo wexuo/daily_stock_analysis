@@ -22,8 +22,8 @@ import requests
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from src.config import Config
-from src.notification_sender import (
+from daily_stock_analysis.config import Config
+from daily_stock_analysis.notification_sender import (
     AstrbotSender,
     CustomWebhookSender,
     DiscordSender,

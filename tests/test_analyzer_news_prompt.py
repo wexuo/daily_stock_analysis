@@ -12,7 +12,7 @@ except ModuleNotFoundError:
 
     ensure_litellm_stub()
 
-from src.analyzer import (
+from daily_stock_analysis.analyzer import (
     GeminiAnalyzer,
     _BULLISH_TREND_HINTS,
     _contains_trend_hint,

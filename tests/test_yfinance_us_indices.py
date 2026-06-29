@@ -46,7 +46,7 @@ class TestFetchYfTickerData(unittest.TestCase):
     """_fetch_yf_ticker_data 单指数取数逻辑测试"""
 
     def setUp(self):
-        from data_provider.yfinance_fetcher import YfinanceFetcher
+        from daily_stock_analysis.data_provider.yfinance_fetcher import YfinanceFetcher
         self.fetcher = YfinanceFetcher()
 
     def test_returns_dict_with_correct_fields(self):
@@ -94,7 +94,7 @@ class TestGetUsMainIndices(unittest.TestCase):
     """_get_us_main_indices 美股指数批量获取测试"""
 
     def setUp(self):
-        from data_provider.yfinance_fetcher import YfinanceFetcher
+        from daily_stock_analysis.data_provider.yfinance_fetcher import YfinanceFetcher
         self.fetcher = YfinanceFetcher()
 
     @patch('data_provider.yfinance_fetcher.get_us_index_yf_symbol')

@@ -7,14 +7,14 @@ import os
 
 import pytest
 
-from src.analyzer import AnalysisResult
-from src.config import Config
-from src.services.decision_signal_extractor import (
+from daily_stock_analysis.analyzer import AnalysisResult
+from daily_stock_analysis.config import Config
+from daily_stock_analysis.services.decision_signal_extractor import (
     build_decision_signal_payload_from_report,
     extract_and_persist_from_analysis_result,
 )
-from src.services.decision_signal_service import DecisionSignalService
-from src.storage import DatabaseManager
+from daily_stock_analysis.services.decision_signal_service import DecisionSignalService
+from daily_stock_analysis.storage import DatabaseManager
 
 
 @pytest.fixture()

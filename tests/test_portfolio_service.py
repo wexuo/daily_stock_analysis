@@ -18,10 +18,10 @@ import pandas as pd
 from sqlalchemy.exc import OperationalError
 from sqlalchemy import select
 
-from src.config import Config
-from src.repositories.portfolio_repo import PortfolioBusyError, PortfolioRepository
-from src.services.portfolio_service import _AvgState, PortfolioConflictError, PortfolioOversellError, PortfolioService
-from src.storage import DatabaseManager, PortfolioDailySnapshot, PortfolioPosition, PortfolioPositionLot, PortfolioTrade
+from daily_stock_analysis.config import Config
+from daily_stock_analysis.repositories.portfolio_repo import PortfolioBusyError, PortfolioRepository
+from daily_stock_analysis.services.portfolio_service import _AvgState, PortfolioConflictError, PortfolioOversellError, PortfolioService
+from daily_stock_analysis.storage import DatabaseManager, PortfolioDailySnapshot, PortfolioPosition, PortfolioPositionLot, PortfolioTrade
 
 
 class PortfolioServiceTestCase(unittest.TestCase):

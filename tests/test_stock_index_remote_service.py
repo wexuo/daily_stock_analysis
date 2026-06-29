@@ -13,7 +13,7 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from src.services import stock_index_remote_service as service
+from daily_stock_analysis.services import stock_index_remote_service as service
 
 
 @pytest.fixture(autouse=True)

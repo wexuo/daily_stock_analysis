@@ -11,15 +11,15 @@ from datetime import datetime, timedelta
 from pathlib import Path
 from unittest.mock import patch
 
-from src.config import Config
-from src.core.market_review import MARKET_REVIEW_HISTORY_CODE, MARKET_REVIEW_REPORT_TYPE
-from src.market_analyzer import MarketIndex, MarketOverview
-from src.services.market_light_service import (
+from daily_stock_analysis.config import Config
+from daily_stock_analysis.core.market_review import MARKET_REVIEW_HISTORY_CODE, MARKET_REVIEW_REPORT_TYPE
+from daily_stock_analysis.market_analyzer import MarketIndex, MarketOverview
+from daily_stock_analysis.services.market_light_service import (
     MARKET_LIGHT_HISTORY_BATCH_SIZE,
     build_current_snapshot,
     load_previous_snapshot,
 )
-from src.storage import AnalysisHistory, DatabaseManager
+from daily_stock_analysis.storage import AnalysisHistory, DatabaseManager
 
 
 def _snapshot(region: str, trade_date: str, score: int = 50) -> dict:

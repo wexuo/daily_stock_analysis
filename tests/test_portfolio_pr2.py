@@ -21,12 +21,12 @@ except ModuleNotFoundError:
     sys.modules["litellm"] = MagicMock()
 
 import src.auth as auth
-from api.app import create_app
-from src.config import Config
-from src.services.portfolio_import_service import PortfolioImportService
-from src.services.portfolio_risk_service import PortfolioRiskService
-from src.services.portfolio_service import PortfolioBusyError, PortfolioService
-from src.storage import DatabaseManager
+from daily_stock_analysis.api.app import create_app
+from daily_stock_analysis.config import Config
+from daily_stock_analysis.services.portfolio_import_service import PortfolioImportService
+from daily_stock_analysis.services.portfolio_risk_service import PortfolioRiskService
+from daily_stock_analysis.services.portfolio_service import PortfolioBusyError, PortfolioService
+from daily_stock_analysis.storage import DatabaseManager
 
 
 def _reset_auth_globals() -> None:

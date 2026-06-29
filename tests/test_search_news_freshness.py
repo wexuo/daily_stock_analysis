@@ -16,8 +16,8 @@ if "newspaper" not in sys.modules:
     mock_np.Config = MagicMock()
     sys.modules["newspaper"] = mock_np
 
-from src.search_service import SearchResponse, SearchResult, SearchService
-from src.services.run_diagnostics import (
+from daily_stock_analysis.search_service import SearchResponse, SearchResult, SearchService
+from daily_stock_analysis.services.run_diagnostics import (
     activate_run_diagnostic_context,
     current_diagnostic_snapshot,
     reset_run_diagnostic_context,

@@ -7,8 +7,8 @@ import unittest
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from src.notification import NotificationChannel
-from src.notification_capabilities import (
+from daily_stock_analysis.notification import NotificationChannel
+from daily_stock_analysis.notification_capabilities import (
     CHANNEL_PROFILES,
     CHANNEL_RENDERER_PRESETS,
     PreparedMessage,

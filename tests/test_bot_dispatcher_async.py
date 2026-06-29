@@ -14,9 +14,9 @@ except ModuleNotFoundError:
     from tests.litellm_stub import ensure_litellm_stub
     ensure_litellm_stub()
 
-from bot.commands.base import BotCommand
-from bot.dispatcher import CommandDispatcher
-from bot.models import BotMessage, BotResponse, ChatType
+from daily_stock_analysis.bot.commands.base import BotCommand
+from daily_stock_analysis.bot.dispatcher import CommandDispatcher
+from daily_stock_analysis.bot.models import BotMessage, BotResponse, ChatType
 
 
 class DummyCommand(BotCommand):
@@ -202,7 +202,7 @@ class TestHandleWebhookAsync(unittest.IsolatedAsyncioTestCase):
     """Test the async webhook handler path."""
 
     async def test_handle_webhook_async_dispatches_via_async(self):
-        from bot.handler import handle_webhook_async
+        from daily_stock_analysis.bot.handler import handle_webhook_async
 
         fake_platform = MagicMock()
         fake_message = _make_message("/dummy")
@@ -224,7 +224,7 @@ class TestHandleWebhookAsync(unittest.IsolatedAsyncioTestCase):
         mock_dispatcher.dispatch_async.assert_awaited_once()
 
     async def test_handle_webhook_async_returns_success_when_bot_disabled(self):
-        from bot.handler import handle_webhook_async
+        from daily_stock_analysis.bot.handler import handle_webhook_async
 
         fake_config = MagicMock()
         fake_config.bot_enabled = False
@@ -238,7 +238,7 @@ class TestHandleWebhookAsync(unittest.IsolatedAsyncioTestCase):
 
 class TestChatCommandCompatibility(unittest.TestCase):
     def test_chat_command_reuses_legacy_session_id_when_history_exists(self):
-        from bot.commands.chat import ChatCommand
+        from daily_stock_analysis.bot.commands.chat import ChatCommand
 
         command = ChatCommand()
         config = SimpleNamespace(agent_mode=True)
@@ -257,7 +257,7 @@ class TestChatCommandCompatibility(unittest.TestCase):
         self.assertEqual(executor.chat.call_args.kwargs["session_id"], "feishu_u1")
 
     def test_chat_command_scopes_group_session_by_chat_id(self):
-        from bot.commands.chat import ChatCommand
+        from daily_stock_analysis.bot.commands.chat import ChatCommand
 
         command = ChatCommand()
         config = SimpleNamespace(agent_mode=True)
@@ -281,7 +281,7 @@ class TestChatCommandCompatibility(unittest.TestCase):
 
 class TestHistoryCommandCompatibility(unittest.TestCase):
     def test_history_clear_uses_group_scoped_session(self):
-        from bot.commands.history import HistoryCommand
+        from daily_stock_analysis.bot.commands.history import HistoryCommand
 
         command = HistoryCommand()
         db = MagicMock()
@@ -303,7 +303,7 @@ class TestDispatcherBaseException(unittest.TestCase):
     def test_error_holder_accepts_base_exception(self):
         """Ensure error_holder dict uses BaseException type hint (code review)."""
         import inspect
-        from bot.dispatcher import CommandDispatcher
+        from daily_stock_analysis.bot.dispatcher import CommandDispatcher
         source = inspect.getsource(CommandDispatcher.dispatch)
         self.assertIn("BaseException", source)
         self.assertNotIn("except Exception", source)

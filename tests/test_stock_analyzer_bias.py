@@ -7,7 +7,7 @@ import math
 import unittest
 from unittest.mock import patch, MagicMock
 
-from src.stock_analyzer import (
+from daily_stock_analysis.stock_analyzer import (
     StockTrendAnalyzer,
     TrendAnalysisResult,
     TrendStatus,
